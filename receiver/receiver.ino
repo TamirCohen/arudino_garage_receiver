@@ -3,8 +3,8 @@
 #define RCV_PIN 3
 #define LED_PIN 13
 #define SCOPE_PIN 5
-#define DEBUG true
-#define DEMO_ARRAY_LEN 11
+#define DEBUG false
+#define DEMO_ARRAY_LEN 20
 
 int i,j,k,p;
 int c_nc=0;//not correct
@@ -16,11 +16,11 @@ int len_ar[2][N];//the # in each state
 bool state_ar[2][N];//state array
 bool mode_count=false;//if transmission started
 char VerfStat=0;
-bool equal = true;
+int equal;
 
 char read_bit(void)
 {
-	static int demo[DEMO_ARRAY_LEN]={1000,70,30,70,30,70,30,70,30,30,70};
+	static int demo[DEMO_ARRAY_LEN]={1500,70,30,70,30,70,30,70,30,30,70,30,1600,100,1700,40,50,40,50,40};
 	static char idx=0;
 	static int idx_internal=demo[0];
 	static bool state=false;
@@ -96,12 +96,11 @@ void loop()
 				c_nc++;
 				if(c_nc == 5)//if 2 in a row
 				{
+                                        state_ar[VerfStat!=0][j] = state;//write state
+					len_ar[VerfStat!=0][j] = c_c+c_nc;//write # (numbers)
 					if (mode_count) //if in transmition
 					{
-						state_ar[VerfStat!=0][j] = state;//write state
-						len_ar[VerfStat!=0][j] = c_c+c_nc;//write # (numbers)
 						j++;
-
 						if(zeroes(state,c_c))
 						{
 							break;
@@ -110,6 +109,7 @@ void loop()
 					else
 					{
 						mode_count = zeroes(state,c_c);
+                                                if (mode_count) j++;        
 		//if ((!state) & (c_c>1000)) mode_count=true;//checking if #0>>1000 mode_count-true
 					}
 					state=!state;//change state
@@ -125,7 +125,8 @@ void loop()
 			}
 		}
 		digitalWrite(LED_PIN,LOW);//finish
-		for (i=0;i<(j-1);i++)//print for debugging
+	/*
+          	for (i=0;i<j;i++)//print for debugging
 		{
 			Serial.print("state ");
 			Serial.print(state_ar[VerfStat!=0][i]);
@@ -133,14 +134,41 @@ void loop()
 			Serial.print(len_ar[0][i]);
 			Serial.print(" ");
 			Serial.println(len_ar[1][i]);
-		}
-		Serial.println( (int) Tcorrect(len_ar[VerfStat!=0]));
-		Serial.print("VerfStat before:");
-		Serial.println((int)VerfStat);
+		}*/
+               // Serial.print("correct:");
+		//Serial.println( (int) Tcorrect(len_ar[VerfStat!=0]));
+		//Serial.print("VerfStat before:");
+		//Serial.println((int)VerfStat);
 
 		if(Tcorrect(len_ar[VerfStat!=0]))
 		{
-			VerfStat = ((!VerfStat) ? 5 : (VerfStat-1));
+                        Serial.print("VerfStat before:");
+		        Serial.println((int)VerfStat);
+                        equal=0;
+                        for (p=0;p<j;p++)
+                          if (abs(len_ar[1][p]-len_ar[0][p])<10) equal++;
+                        Serial.print("Equals:");
+                        Serial.print(equal);  
+                        Serial.print(" ");
+                        Serial.print(j-equal);
+                        Serial.print(" ");
+                        Serial.println(j);
+			if ((equal>10)|(!VerfStat)) 
+                        {
+                                  VerfStat = ((!VerfStat) ? 5 : (VerfStat-1));
+/*                                  for (i=0;i<j;i++)//print for debugging
+		                  {
+                                        Serial.print(i);
+                			Serial.print(" state ");
+                			Serial.print(state_ar[VerfStat!=0][i]);
+                			Serial.print(" ");
+                			Serial.print(len_ar[0][i]);
+                			Serial.print(" ");
+                			Serial.println(len_ar[1][i]);
+                                  }     */
+                                  Serial.print("VerfStat after:");
+		                  Serial.println((int)VerfStat);
+                        }
 		} else
 		{
 			for(p=0;p<N;p++)
@@ -148,9 +176,6 @@ void loop()
 				len_ar[VerfStat!=0][p]=0;
 			}
 		}
-		Serial.print("VerfStat after:");
-		Serial.println((int)VerfStat);
-
 		for(p=0;p<N;p++)
 		{
 			len_ar[1][p]=0;
