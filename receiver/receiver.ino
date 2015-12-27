@@ -37,10 +37,8 @@ char read_bit(void)
 			state=!state;
  		}
 		else
-		{
 			idx_internal--;
-			return(state);
-		}
+		return(state);
 	}
 }
 
