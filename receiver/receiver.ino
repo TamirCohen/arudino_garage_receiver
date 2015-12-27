@@ -125,25 +125,11 @@ void loop()
 			}
 		}
 		digitalWrite(LED_PIN,LOW);//finish
-	/*
-          	for (i=0;i<j;i++)//print for debugging
-		{
-			Serial.print("state ");
-			Serial.print(state_ar[VerfStat!=0][i]);
-			Serial.print(" ");
-			Serial.print(len_ar[0][i]);
-			Serial.print(" ");
-			Serial.println(len_ar[1][i]);
-		}*/
-               // Serial.print("correct:");
-		//Serial.println( (int) Tcorrect(len_ar[VerfStat!=0]));
-		//Serial.print("VerfStat before:");
-		//Serial.println((int)VerfStat);
 
 		if(Tcorrect(len_ar[VerfStat!=0]))
 		{
                         Serial.print("VerfStat before:");
-		        Serial.println((int)VerfStat);
+						Serial.println((int)VerfStat);
                         equal=0;
                         for (p=0;p<j;p++)
                           if (abs(len_ar[1][p]-len_ar[0][p])<10) equal++;
@@ -183,11 +169,3 @@ void loop()
 	}
 	while(1);
 }
-
-
-
-
-/* else if ( ((len_ar[j] - (c_c+c_nc)) < -10 ) || ((len_ar[j] - (c_c+c_nc)) > 10) )//if diffrent from 1st FIX FROM HERE!!!!!
-{
-equal = false;
-}*/
