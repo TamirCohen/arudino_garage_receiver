@@ -1,6 +1,9 @@
 #define N 200
 #define ZeroNum 1000
-bool pin_state=true;
+#define RCV_PIN 3
+#define LED_PIN 13
+#define SCOPE_PIN 5
+
 int i,j,k,p;
 int c_nc=0;//not correct
 int c_c=0;
@@ -32,7 +35,6 @@ boolean Tcorrect(int  len_ar[])
     {
       return true;
     }
-    
     if(len_ar[k]<10)
     {
       return false;
@@ -43,9 +45,9 @@ void setup()
 {
  
   Serial.begin(9600);//configuration
-  pinMode(3,INPUT);//data from reciver
-  pinMode(5,OUTPUT);//for debugging-scope
-  pinMode(13,OUTPUT);//led receving
+  pinMode(RCV_PIN,INPUT);//data from reciver
+  pinMode(SCOPE_PIN,OUTPUT);//for debugging-scope
+  pinMode(LED_PIN,OUTPUT);//led receving
 }
 
 void loop() 
@@ -59,11 +61,11 @@ void loop()
     state = 0;
     c_c=0;
     c_nc=0;   
-    digitalWrite(13,HIGH);
+    digitalWrite(LED_PIN,HIGH);
     
     while (j<N) 
     {  
-      c=digitalRead(3);//read high/low - 1/0
+      c=digitalRead(RCV_PIN);//read high/low - 1/0
       
       if(!(c==state))//if Read isnt state
       {
@@ -98,7 +100,7 @@ void loop()
         c_nc=0;
       }  
     }
-    digitalWrite(13,LOW);//finish
+    digitalWrite(LED_PIN,LOW);//finish
     for (i=0;i<(j-1);i++)//print for debugging 
     {
           Serial.print("state ");
