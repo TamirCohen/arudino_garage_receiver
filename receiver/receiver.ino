@@ -4,7 +4,7 @@
 #define LED_PIN 13
 #define SCOPE_PIN 5
 #define DEBUG false
-#define DEMO_ARRAY_LEN 20
+#define DEMO_ARRAY_LEN 30
 
 int i,j,k,p;
 int c_nc=0;//not correct
@@ -20,7 +20,7 @@ int equal;
 
 char read_bit(void)
 {
-	static int demo[DEMO_ARRAY_LEN]={1500,70,30,70,30,70,30,70,30,30,70,30,1600,100,1700,40,50,40,50,40};
+	static int demo[DEMO_ARRAY_LEN]={1500,70,30,70,30,70,30,70,30,70,1500,10,1500,70,30,70,30,70,30,70,30,70,1500,10,1500,40,50,40,1500,10};
 	static char idx=0;
 	static int idx_internal=demo[0];
 	static bool state=false;
@@ -67,6 +67,14 @@ boolean Tcorrect(int  len_ar[])
 		}
 	}
 }
+void clean_arr(int* array)
+{
+  int p;
+  for(p=0;p<N;p++)
+  {
+    array[p]=0;
+  }
+}
 void setup()
 {
 	Serial.begin(9600);//configuration
@@ -94,9 +102,9 @@ void loop()
 			if(!(c==state))//if Read isnt state
 			{
 				c_nc++;
-				if(c_nc == 5)//if 2 in a row
+				if(c_nc == 5)//if 5 in a row
 				{
-					state_ar[VerfStat!=0][j] = state;//write state
+                                        state_ar[VerfStat!=0][j] = state;//write state
 					len_ar[VerfStat!=0][j] = c_c+c_nc;//write # (numbers)
 					if (mode_count) //if in transmition
 					{
@@ -109,9 +117,8 @@ void loop()
 					else
 					{
 						mode_count = zeroes(state,c_c);
-						if (mode_count) j++;
-		//if ((!state) & (c_c>1000)) mode_count=true;//checking if #0>>1000 mode_count-true
-					}
+                                                if (mode_count) j++;        
+							}
 					state=!state;//change state
 					c_c=0;
 					c_nc=0;
@@ -128,44 +135,48 @@ void loop()
 
 		if(Tcorrect(len_ar[VerfStat!=0]))
 		{
-			Serial.print("VerfStat before:");
-			Serial.println((int)VerfStat);
-			equal=0;
-			for (p=0;p<j;p++)
-				if (abs(len_ar[1][p]-len_ar[0][p])<10) equal++;
-			Serial.print("Equals:");
-			Serial.print(equal);  
-			Serial.print(" ");
-			Serial.print(j-equal);
-			Serial.print(" ");
-			Serial.println(j);
-			if ((equal>10)|(!VerfStat)) 
-			{
-				 VerfStat = ((!VerfStat) ? 5 : (VerfStat-1));
-/*				for (i=0;i<j;i++)//print for debugging
-				{
-					Serial.print(i);
-					Serial.print(" state ");
-					Serial.print(state_ar[VerfStat!=0][i]);
-					Serial.print(" ");
-					Serial.print(len_ar[0][i]);
-					Serial.print(" ");
-					Serial.println(len_ar[1][i]);
-				}     */
-				 Serial.print("VerfStat after:");
-				 Serial.println((int)VerfStat);
-			}
+                        Serial.print("VerfStat before:");
+		        Serial.println((int)VerfStat);
+                        equal=0;
+                        for (p=0;p<j;p++)
+                          if (abs(len_ar[1][p]-len_ar[0][p])<10) equal++;
+                        Serial.print("Equals:");
+                        Serial.print(equal);  
+                        Serial.print(" ");
+                        Serial.print(j-equal);
+                        Serial.print(" ");
+                        Serial.println(j);
+			if ((equal==j)|(!VerfStat)) 
+                        {
+                                  VerfStat = ((!VerfStat) ? 5 : (VerfStat-1));
+/*                                  for (i=0;i<j;i++)//print for debugging
+		                  {
+                                        Serial.print(i);
+                			Serial.print(" state ");
+                			Serial.print(state_ar[VerfStat!=0][i]);
+                			Serial.print(" ");
+                			Serial.print(len_ar[0][i]);
+                			Serial.print(" ");
+                			Serial.println(len_ar[1][i]);
+                                  }     */
+                                  Serial.print("VerfStat after:");
+		                  Serial.println((int)VerfStat);
+                        }
+                        
+                        else
+                        {
+                          clean_arr(len_ar[1]);
+                          for (p=0;p<j;p++)
+                          {
+                            len_ar[0][p]=len_ar[1][p];
+                          }
+                          VerfStat=0;
+                        }
 		} else
 		{
-			for(p=0;p<N;p++)
-			{
-				len_ar[VerfStat!=0][p]=0;
-			}
+		  clean_arr(len_ar[VerfStat!=0]);
 		}
-		for(p=0;p<N;p++)
-		{
-			len_ar[1][p]=0;
-		}
+                clean_arr(len_ar[1]);
 	}
 	while(1);
 }
