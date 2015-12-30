@@ -104,21 +104,21 @@ void loop()
 				c_nc++;
 				if(c_nc == 5)//if 5 in a row
 				{
-                                        state_ar[VerfStat!=0][j] = state;//write state
+                    state_ar[VerfStat!=0][j] = state;//write state
 					len_ar[VerfStat!=0][j] = c_c+c_nc;//write # (numbers)
 					if (mode_count) //if in transmition
 					{
-						j++;
-						if(zeroes(state,c_c))
+						j++;//byte num in transmition
+						if(zeroes(state,c_c))//if stopped tansmition
 						{
 							break;
 						}
 					}
 					else
 					{
-						mode_count = zeroes(state,c_c);
-                                                if (mode_count) j++;        
-							}
+						mode_count = zeroes(state,c_c);//check new transmition?
+                        if (mode_count) j++;//if in transmition count byte        
+					}
 					state=!state;//change state
 					c_c=0;
 					c_nc=0;
@@ -136,10 +136,12 @@ void loop()
 		if(Tcorrect(len_ar[VerfStat!=0]))
 		{
                         Serial.print("VerfStat before:");
-		        Serial.println((int)VerfStat);
+		        		Serial.println((int)VerfStat);
                         equal=0;
                         for (p=0;p<j;p++)
+						{
                           if (abs(len_ar[1][p]-len_ar[0][p])<10) equal++;
+						}
                         Serial.print("Equals:");
                         Serial.print(equal);  
                         Serial.print(" ");
@@ -148,35 +150,26 @@ void loop()
                         Serial.println(j);
 			if ((equal==j)|(!VerfStat)) 
                         {
-                                  VerfStat = ((!VerfStat) ? 5 : (VerfStat-1));
-/*                                  for (i=0;i<j;i++)//print for debugging
-		                  {
-                                        Serial.print(i);
-                			Serial.print(" state ");
-                			Serial.print(state_ar[VerfStat!=0][i]);
-                			Serial.print(" ");
-                			Serial.print(len_ar[0][i]);
-                			Serial.print(" ");
-                			Serial.println(len_ar[1][i]);
-                                  }     */
-                                  Serial.print("VerfStat after:");
+                          VerfStat = ((!VerfStat) ? 5 : (VerfStat-1));//if status=0->5 else status--
+                          Serial.print("VerfStat after:");
 		                  Serial.println((int)VerfStat);
                         }
                         
-                        else
+                        else//if not stat 0 and not tottaly equals
                         {
-                          clean_arr(len_ar[1]);
+                          clean_arr(len_ar[0]);//delete array 0
                           for (p=0;p<j;p++)
                           {
                             len_ar[0][p]=len_ar[1][p];
                           }
                           VerfStat=0;
                         }
-		} else
+		} 
+		else//if the new arr is bad
 		{
-		  clean_arr(len_ar[VerfStat!=0]);
+		  clean_arr(len_ar[VerfStat!=0]);// clean it
 		}
-                clean_arr(len_ar[1]);
+    clean_arr(len_ar[1]);//clean the compare arr
 	}
 	while(1);
 }
