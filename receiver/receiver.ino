@@ -155,10 +155,9 @@ void loop()
 		                  Serial.println((int)VerfStat);
                         }
                         
-                        else//if not stat 0 and not tottaly equals
+                        else//if not stat 0 or not tottaly equals
                         {
-                          clean_arr(len_ar[0]);//delete array 0
-                          for (p=0;p<j;p++)
+                          for (p=0;p<N;p++)
                           {
                             len_ar[0][p]=len_ar[1][p];
                           }
