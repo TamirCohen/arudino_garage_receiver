@@ -93,6 +93,10 @@ ComVector::ComVector(void)
   }
 
 
+  int* ComVector::GetVec(void)
+  {
+	return _vector;  
+  }
   void ComVector::clean_arr(void)
   {
     int p;

@@ -12,6 +12,7 @@
       boolean compare(ComVector &c2);
       void copy(ComVector &c2);
       int GetLength(void);
+	  int* GetVec(void);
     private:
       boolean zeroes(bool state,int c_c);
       boolean Tcorrect(void);
