@@ -1,7 +1,7 @@
 #include "Arduino.h"
 #include "EEPROM_sys.h"
 
-void EEPROM_sys::EEPROM_sys(void)
+EEPROM_sys::EEPROM_sys(void)
 {
 	size=EEPROM.length();
 }
@@ -17,7 +17,11 @@ bool EEPROM_sys::read(ComVector &vec, char idx)
 	if (offset<0) return(false);
 	else
 	{
-		for(i=0;i<len,i++) p[i]=EEPROM.get(offset+i*sizeof(int));
+		for(i=0;i<len;i++)
+		{
+			EEPROM.get(offset+i*sizeof(int),p[i]);
+		}			
+
 		return(true);
 	}
 }
@@ -33,7 +37,7 @@ bool EEPROM_sys::write(ComVector &vec, char idx)
 	if (offset<0) return(false);
 	else
 	{
-		for(i=0;i<len,i++) EEPROM.put(offset+i*sizeof(int),p[i]);
+		for(i=0;i<len;i++) EEPROM.put(offset+i*sizeof(int),p[i]);
 		return(true);
 	}
 }
@@ -41,7 +45,11 @@ bool EEPROM_sys::write(ComVector &vec, char idx)
 
 int EEPROM_sys::calc_offset(int len, char idx) 
 {
-	if (((idx+1)*len*sizeof(int))<=this.size) return(idx*len*sizeof(int));
+	if (((idx+1)*len*sizeof(int)) <= size) 
+	{
+		return(idx*len*sizeof(int));
+	}	
+	
 	else return(-1); //no space for this table
 }
 
