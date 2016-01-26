@@ -9,8 +9,8 @@ class EEPROM_sys
 {
 	public:
 		EEPROM_sys(void);
-		bool write(ComVector &vec, char idx) ;
-		bool read(ComVector &vec, char idx) ;
+		bool write(int *vec, char idx,int len) ;
+		int read(int *vec, char idx) ;
 		
 	private:
 		int size;

@@ -3,7 +3,7 @@
 #include "com.h"
 
 #define LED_PIN 13
-  ComVector* com::GetCode()
+  ComVector* com::GetVec()
   {
 	  return &_ArrVec[0];
   }

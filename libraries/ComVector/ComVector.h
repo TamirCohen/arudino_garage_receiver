@@ -8,11 +8,14 @@
     public:
       boolean receive(void);
       ComVector(void);
+	  ComVector(int n);
       void clean_arr(void);
       boolean compare(ComVector &c2);
       void copy(ComVector &c2);
       int GetLength(void);
-	  int* GetVec(void);
+	  void writeEE(char idx);
+	  void readEE(char idx);
+	  void printVec(void);
     private:
       boolean zeroes(bool state,int c_c);
       boolean Tcorrect(void);

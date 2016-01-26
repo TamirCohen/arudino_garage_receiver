@@ -7,7 +7,7 @@ class com
       ComVector _ArrVec[2]; 
     public:
       void MultiRead(void);
-      ComVector* GetCode(void);
+      ComVector* GetVec(void);
        
     
   };
