@@ -8,6 +8,9 @@
 #define ZeroNum 1000
 #define RCV_PIN 3
 #define DEBUG false
+#define Tran_Factor 13.7 
+#define Tran_Num 4
+#define TRAN_PIN 4
 
 
 ComVector::ComVector(void)
@@ -178,4 +181,25 @@ void ComVector::writeEE(char idx)
 void ComVector::readEE(char idx)
 {
 	_length = EE_manager.read(_vector,idx);
+}
+
+void ComVector::transmit(void)
+{
+	int i,j;
+	for(i=0;i<Tran_Num;i++)
+	{
+		for(j=0;j<_length;j++)
+		{
+			if(j%2==1)
+			{
+				digitalWrite(TRAN_PIN,HIGH);
+				delayMicroseconds(_vector[j]*Tran_Factor);
+			}
+			else
+			{
+				digitalWrite(TRAN_PIN,LOW);
+				delayMicroseconds(_vector[j]*Tran_Factor);
+			}
+		}
+	}
 }

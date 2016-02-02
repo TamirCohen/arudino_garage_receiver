@@ -16,6 +16,7 @@
 	  void writeEE(char idx);
 	  void readEE(char idx);
 	  void printVec(void);
+	  void transmit(void);
     private:
       boolean zeroes(bool state,int c_c);
       boolean Tcorrect(void);
