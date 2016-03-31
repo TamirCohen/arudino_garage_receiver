@@ -6,11 +6,12 @@
 #define DEMO_ARRAY_LEN 30
 #define N 200
 #define ZeroNum 1000
-#define RCV_PIN 3
+#define RCV_PIN 6
 #define DEBUG false
-#define Tran_Factor 13.7 
+#define Tran_Factor 5.6
 #define Tran_Num 4
 #define TRAN_PIN 4
+
 
 
 ComVector::ComVector(void)
