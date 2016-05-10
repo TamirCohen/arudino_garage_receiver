@@ -18,14 +18,10 @@ void Button::UpdateLoc(void)
 		if(temp==LOW)
 		{
 			loc--;
-			TransMenu.left();
-			TransMenu.show();
 		}
 		else
 		{
 			loc++;
-			TransMenu.right();
-			TransMenu.show();
 		}
 		Serial.println(loc);
 
