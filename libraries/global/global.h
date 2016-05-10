@@ -6,6 +6,7 @@
 extern EEPROM_sys EE_manager;
 extern LiquidCrystal lcd;
 extern Menu TransMenu;
+extern ComVector Com_manager;
 
 
 

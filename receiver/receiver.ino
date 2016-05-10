@@ -5,8 +5,7 @@
 #include <com.h>
 #include <global.h>
 #include <Button.h>
-#include <Menu.h>
-#include <LiquidCrystal.h>
+
 
 #define RCV_PIN 6
 #define LED_PIN 13
@@ -17,9 +16,6 @@
 #define PUSH_PIN 4//blue 
 EEPROM_sys EE_manager;
 Button Button_manager; 
-LiquidCrystal lcd(12, 11, 5, 6, 3, 2);
-String Temparr[5]={"transmition1","transmition2","transmition3","transmition4","transmition5"};
-Menu TransMenu(Temparr,"Transmit");
 void DoClick()
 {
   Button_manager.Click();
@@ -27,8 +23,6 @@ void DoClick()
 void setup()
 {
   Serial.begin(9600);//configuration
-  lcd.begin(16, 2);
-  TransMenu.show();
   pinMode(RCV_PIN,INPUT);//data from reciver
   pinMode(SCOPE_PIN,OUTPUT);//for debugging-scope
   pinMode(LED_PIN,OUTPUT);//led receving
@@ -44,16 +38,16 @@ void setup()
 
 void loop()
 {
- // com m;
- // m.MultiRead();
- //ComVector* a = m.GetVec();
+  com m;
+  m.MultiRead();
+ ComVector* a = m.GetVec();
  //ComVector a(200);
- //a->writeEE(0);
+ a->writeEE(0);
  // a->readEE(0);
- //a->printVec();
+ a->printVec();
+ Serial.println("here");
  //Serial.println(Button_manager.GetLoc());
- Button_manager.CheckLoc();
- TransMenu.show();
+ //Button_manager.CheckLoc();
  while(1);
 }
 

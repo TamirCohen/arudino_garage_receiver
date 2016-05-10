@@ -13,14 +13,16 @@ class Menu : public Page
 	public:
 		void left();
 		void right();
-		//virtual void click();
-		Menu(String arr[],String header);
+		void focus();
+		void unfocus();
+		Menu(String arr[],int size,int row,String message);
 	private:
-		String header;
 		String str_array[max_length];
 		int mid_pos(String SingleStr);
 		void update_menu(int move);
-		int str_loc;
 		int arr_len;
+		boolean selected;
+	protected:
+		int str_loc;
 };
 #endif
