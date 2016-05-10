@@ -1,9 +1,10 @@
 #include "Button.h"
 #include "Arduino.h"
-#define PHASE_A_PIN 2
-#define PHASE_B_PIN 7
-#define PUSH_PIN 3
+#include "global.h"
 #define DelayTime 0
+#define PHASE_A_PIN 7//red
+#define PHASE_B_PIN 8//green
+#define PUSH_PIN 4//blue
 Button::Button()
 {
 	loc=0;
@@ -17,10 +18,14 @@ void Button::UpdateLoc(void)
 		if(temp==LOW)
 		{
 			loc--;
+			TransMenu.left();
+			TransMenu.show();
 		}
 		else
 		{
 			loc++;
+			TransMenu.right();
+			TransMenu.show();
 		}
 		Serial.println(loc);
 

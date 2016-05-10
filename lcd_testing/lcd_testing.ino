@@ -40,8 +40,7 @@ void setup() {
 
 void loop() 
 {
-  String arrr[3]={"transmition1","transmition2","transmition3"};
-  Menu bla(arrr,"Transmit");
+
  bla.show();
  delay(5000);
  bla.right();
