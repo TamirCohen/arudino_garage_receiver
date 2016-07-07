@@ -18,7 +18,6 @@
 
 // include the library code:
 #include <LiquidCrystal.h>
-#include "TransmitMenu.h"
 #include <LcdString.h>
 #include <global.h>
 #include "Menu.h"
@@ -27,11 +26,8 @@
 #define PHASE_B_PIN 7
 #define PUSH_PIN 3
 LiquidCrystal lcd(12, 11, 5, 6, 3, 2);
-ComVector Com_manager(200);
-EEPROM_sys EE_manager;
 void setup() {
   // set up the LCD's number of columns and rows:
-  
   
   // Print a message to the LCD.
   //lcd.print("->");
@@ -44,20 +40,19 @@ void setup() {
 
 void loop() 
 {
-String Temparr[5]={"transmition1","transmition2","transmition3","transmition4","transmition5"};
-TransmitMenu TransMenu(Temparr,sizeof(Temparr)/sizeof(String),0);
-TransMenu.show();
-delay(5000);
-TransMenu.right();
-TransMenu.show();
-delay(5000);
-TransMenu.right();
-TransMenu.show();
-delay(5000);
-TransMenu.right();
-TransMenu.show();
-TransMenu.click();
-while(1);
+
+ bla.show();
+ delay(5000);
+ bla.right();
+ bla.show();
+ delay(5000);
+ bla.right();
+ bla.show();
+  //LcdString a(1,0,"<");
+  //a.Display();
+  //LcdString b(1,15,">");
+  //b.Display();
+  while(1);
 
 
   // print the number of seconds since reset:

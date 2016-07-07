@@ -10,23 +10,24 @@
 
 
 
-Menu::Menu(String arr[],int size,int row):Page()//make common function+add Messege and variable
+Menu::Menu(String arr[],String Header):Page()
 {
-	arr_len=size;
-	selected=false;
+	arr_len=sizeof(arr)+1;
 	int j;
 	for(j=0;j<arr_len;j++)
 	{
 		str_array[j]=arr[j];
 	}
 	str_loc=0;
+	header=Header;
 	lcd_array[arrow_left_loc].SetText("<");
-	lcd_array[arrow_left_loc].SetRow(row);
+	lcd_array[arrow_left_loc].SetRow(1);
 	lcd_array[arrow_left_loc].SetColumn(0);
 	lcd_array[arrow_right_loc].SetText(">");
-	lcd_array[arrow_right_loc].SetRow(row);
+	lcd_array[arrow_right_loc].SetRow(1);
 	lcd_array[arrow_right_loc].SetColumn(15);
-	lcd_array[text_loc].SetRow(row);
+	lcd_array[header_loc].SetRow(0);
+	lcd_array[text_loc].SetRow(1);
 	update_menu(0);
 	
 }
@@ -44,7 +45,11 @@ void Menu::left()
 }
 void Menu::update_menu(int move)
 {
-	clear();	
+	clear();
+	Serial.print("arr_len ");
+	Serial.println(arr_len);
+	
+	
 	if(str_loc+move<arr_len&&str_loc+move>-1)
 	{
 		str_loc = str_loc+move;
@@ -52,28 +57,25 @@ void Menu::update_menu(int move)
 		lcd_array[arrow_right_loc].SetText(">");
 		if(str_loc==0)
 		{
+			Serial.println("to left");
 			lcd_array[arrow_left_loc].SetText("");
 			if(arr_len==0)
 			{
 				lcd_array[arrow_right_loc].SetText("");
 			}
 		}
-		
 		else if(str_loc==arr_len-1)
 		{
+			Serial.println("to right");
 			lcd_array[arrow_right_loc].SetText("");
 		}
 		lcd_array[text_loc].SetText(str_array[str_loc]);
 		lcd_array[text_loc].SetColumn(mid_pos(str_array[str_loc]));
+		lcd_array[header_loc].SetText(header);
+		lcd_array[header_loc].SetColumn(mid_pos(header));
+		Serial.println("right");
 		Serial.println(lcd_array[arrow_right_loc].GetText());
+		Serial.println("left");
 		Serial.println(lcd_array[arrow_left_loc].GetText());
 	}
-}
-void Menu::focus()
-{
-	selected=true;
-}
-void Menu::unfocus()
-{
-	selected=false;
 }

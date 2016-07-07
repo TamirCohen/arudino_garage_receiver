@@ -204,9 +204,3 @@ void ComVector::transmit(void)
 		}
 	}
 }
-void ComVector::TransmitVec(int idx)
-{
-	char indx = idx;
-	readEE(indx);
-	printVec();//change to transmit
-}
