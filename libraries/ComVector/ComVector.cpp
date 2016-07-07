@@ -4,13 +4,13 @@
 #include <global.h>
 
 #define DEMO_ARRAY_LEN 30
-#define N 200
+#define N 195
 #define ZeroNum 1000
-#define RCV_PIN 6
+#define RCV_PIN 10
 #define DEBUG false
 #define Tran_Factor 5.6
 #define Tran_Num 4
-#define TRAN_PIN 4
+#define TRAN_PIN 9
 
 
 
@@ -28,6 +28,10 @@ ComVector::ComVector(int n)
   {
 	  _vector[i]=0;
   }
+}
+ComVector::ComVector(int n,String Name):ComVector(n)
+{
+	name=Name;
 }
 int ComVector::GetLength()
 {
@@ -150,6 +154,9 @@ while (j<N)
 		j++;//byte num in transmition
 		if(zeroes(state,c_c))//if stopped tansmition
 		{
+			//Serial.println("stop-trans 0 num-");
+			//Serial.println(c_c);
+			
 		  break;
 		}
 	  }
@@ -174,16 +181,24 @@ _length = j;
 return(Tcorrect());
 }
 
+String ComVector::GetName()
+{
+	return name;
+}
 void ComVector::writeEE(char idx)
 {
-	EE_manager.write(_vector,idx,_length);
+	EE_manager.write(_vector,idx,_length,name);
 }
 
 void ComVector::readEE(char idx)
 {
-	_length = EE_manager.read(_vector,idx);
+	_length = EE_manager.read_len(_vector,idx);
+	name = EE_manager.read_name(idx);
 }
-
+void ComVector::setName(String Name)
+{
+	name=Name;
+}
 void ComVector::transmit(void)
 {
 	int i,j;

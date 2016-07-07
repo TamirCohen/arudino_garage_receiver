@@ -13,9 +13,8 @@ class Button
 		
 	private:
 		int loc;
-		unsigned long Last_update;
 		bool LastStateA;
-		int LastClick;
+		unsigned long LastClick;
 
 };
 

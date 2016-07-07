@@ -3,12 +3,9 @@
 #include "LcdString.h"
 #include <global.h>
 #define max_Str 10
+#define led_length 16
 Page::Page(LcdString* arr)
 {
-	for (int j=0;j<sizeof(arr);j++)
-	{
-		Serial.println(arr[j].GetText());
-	}
 	if(sizeof(arr)<max_Str+1)
 	{
 		int i;
@@ -40,4 +37,12 @@ void Page::show()
 void Page::clear()
 {
 	lcd.clear();
+}
+int Page::mid_pos(String SingleStr)
+{
+	return((led_length-SingleStr.length())/2);
+}
+boolean Page::IsFocus()
+{
+	return focus;
 }
