@@ -4,11 +4,11 @@
 #define DelayTime 0
 #define PHASE_A_PIN 7//red
 #define PHASE_B_PIN 8//green
-#define PUSH_PIN 4//blue
+#define PUSH_PIN 3//blue
 Button::Button()
 {
 	loc=0;
-	Last_update=0;
+	LastClick=0;
 	LastStateA=false;
 	
 }
@@ -17,13 +17,12 @@ void Button::UpdateLoc(void)
 		bool temp = digitalRead(PHASE_B_PIN);
 		if(temp==LOW)
 		{
-			loc--;
+			UI_Manager.Right();
 		}
 		else
 		{
-			loc++;
+			UI_Manager.Left();
 		}
-		Serial.println(loc);
 
 }
 void Button::CheckLoc()
@@ -44,19 +43,20 @@ int Button::GetLoc(void)
 }
 void Button::Click(void)
 {
+	
 	if(digitalRead(PUSH_PIN)==LOW)
-	{
+	{	
 		LastClick = millis();
 	}
 	else
 	{
-		if(millis()-LastClick>1000)
+		if(millis()-LastClick>900)
 		{
-			Serial.println("LongClick");
+			UI_Manager.LongClick();
 		}
-		else if(millis()-LastClick>3)
+		else if(millis()-LastClick>50)
 		{
-			Serial.println("ShortClick");
+			UI_Manager.ShortClick();
 		}
 	}
 	

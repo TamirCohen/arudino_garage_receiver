@@ -7,13 +7,16 @@
 class Page
 {
 	public:
-		void show();
+		virtual void show();
 		Page(LcdString* arr);
 		void clear();
 		Page();
+		boolean IsFocus();
 		//virtual void click();
 	protected:
 		LcdString lcd_array[max_Str];
+		int mid_pos(String SingleStr);
+		boolean focus;
 		
 };
 #endif
