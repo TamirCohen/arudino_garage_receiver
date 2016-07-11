@@ -42,7 +42,7 @@ String EEPROM_sys::read_name(char idx)
 		EEPROM.get(offset,buffer[i]);
 		offset=offset+sizeof(char);
 	}
-	String ret =buffer;
+	String ret(buffer);
 	return(ret);
 }
 
@@ -52,11 +52,8 @@ bool EEPROM_sys::write(int *vec, char idx,int len,String name)//vi
 	int* p=vec;
 	Serial.println("name before:");
 	Serial.println(name);
-	char buffer[name.length()];
-	name.toCharArray(buffer,name.length());
-	Serial.print("new str:");
-	String tmp1(buffer);
-	Serial.println(tmp1);
+	char buffer[name.length()+1];
+	name.toCharArray(buffer,name.length()+1);
 	if (len>max_vec_len) return(false);//checking
 	offset = IsFit(len,idx,name);//calc offset
 	if (offset<0) return(false);//checking
