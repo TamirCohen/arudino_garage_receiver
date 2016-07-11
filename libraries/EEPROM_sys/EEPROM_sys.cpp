@@ -50,8 +50,13 @@ bool EEPROM_sys::write(int *vec, char idx,int len,String name)//vi
 {
 	int offset,i;
 	int* p=vec;
-	char* buffer;
+	Serial.println("name before:");
+	Serial.println(name);
+	char buffer[name.length()];
 	name.toCharArray(buffer,name.length());
+	Serial.print("new str:");
+	String tmp1(buffer);
+	Serial.println(tmp1);
 	if (len>max_vec_len) return(false);//checking
 	offset = IsFit(len,idx,name);//calc offset
 	if (offset<0) return(false);//checking
