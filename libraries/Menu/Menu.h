@@ -15,6 +15,7 @@ class Menu : public Page
 		int getLoc();
 		String getStr();
 		void setLoc(int n);
+		void setNames(String arr[],int size);
 	private:
 		String str_array[max_length];
 		void update_menu(int move);
@@ -22,5 +23,6 @@ class Menu : public Page
 		int arr_len;
 		String message;
 		int row;
+		
 };
 #endif

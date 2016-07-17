@@ -16,23 +16,24 @@
 
 ComVector::ComVector(void)
 {
-_length=0;
-clean_arr();
+	_length=0;
+	clean_arr();
 }
 
 ComVector::ComVector(int n)
 {
-  _length=n;
-  int i;
-  for(i=0;i<n;i++)
-  {
-	  _vector[i]=0;
-  }
+	_length=n;
+	int i;
+	for(i=0;i<n;i++)
+	{
+		_vector[i]=0;
+	}
 }
 ComVector::ComVector(int n,String Name):ComVector(n)
 {
 	name=Name;
 }
+
 int ComVector::GetLength()
 {
 return _length;
@@ -185,9 +186,9 @@ String ComVector::GetName()
 {
 	return name;
 }
-void ComVector::writeEE(char idx)
+void ComVector::writeEE()
 {
-	EE_manager.write(_vector,idx,_length,name);
+	EE_manager.writeL(_vector,_length,name);
 }
 
 void ComVector::readEE(char idx)

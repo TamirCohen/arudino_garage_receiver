@@ -2,11 +2,12 @@
 #include "Menu.h"
 #include "Spage.h"
 #include "NamePage.h"
+#include "global.h"
 #include <arduino.h>
 UIManager::UIManager()
 {
-	String arrr[4]={"transmition1","transmition2","shalom3","tran4"};
-    TransMenu=new Menu(arrr,4,0,"");
+	String *arrr = EE_manager.GetNames(); 
+    TransMenu=new Menu(arrr,EE_manager.LastIdx(),0,"");
     String arr[3] ={"New","Delete","Transmit"};
     SetMenu=new Menu(arr,3,1,"Settings");
 	TransPage=new Spage("Transmiting:");
@@ -35,12 +36,15 @@ void UIManager::LongClick()
 	}
 	if(NPage->IsFocus())
 	{
-		if(NPage->GetName()!="")
+		
+		String name =NPage->GetName()
+		if(name!="")
 		{
 			NPage->Cfocus();
 			TransMenu->Cfocus();
 			TransMenu->show();
 			SetMenu->show();
+			
 			//add transmition in eeprom-get str
 		}
 		

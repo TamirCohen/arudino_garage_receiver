@@ -3,8 +3,8 @@
 
 #define N 195
 #include "Arduino.h" 
- class ComVector
-  {
+class ComVector
+{
     public:
       boolean receive(void);
       ComVector(void);
@@ -14,7 +14,7 @@
       boolean compare(ComVector &c2);
       void copy(ComVector &c2);
       int GetLength(void);
-	  void writeEE(char idx);
+	  void writeEE();
 	  void readEE(char idx);
 	  void printVec(void);
 	  void transmit(void);
@@ -25,9 +25,8 @@
       boolean Tcorrect(void);
       char read_bit(void);
 	  String name;
-      
-      int _vector[N];
+      int _vector[N];//stATIC
       int _length;
       
-  };
+};
 #endif

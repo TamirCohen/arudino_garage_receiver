@@ -21,15 +21,16 @@
 #define PUSH_PIN 3//blue
 LiquidCrystal lcd(12, 11, 5, 6, 4, 2); 
 EEPROM_sys EE_manager;
-//Button Button_manager;!!important!!
-//UIManager UI_Manager;!!important!!
+Button Button_manager;
+UIManager UI_Manager;
 void DoClick()
 {
-//  Button_manager.Click();!!important!!
+  Button_manager.Click();
 }
 void setup()
 {
   Serial.begin(9600);//configuration
+  Serial.println("begin trans");
   lcd.begin(16, 2);
   pinMode(RCV_PIN,INPUT);//data from reciver
   pinMode(SCOPE_PIN,OUTPUT);//for debugging-scope
@@ -38,30 +39,31 @@ void setup()
   pinMode(PHASE_A_PIN,INPUT_PULLUP);
   pinMode(PHASE_B_PIN,INPUT_PULLUP);
   pinMode(PUSH_PIN,INPUT_PULLUP);
-  //attachInterrupt(digitalPinToInterrupt(PUSH_PIN),DoClick, CHANGE);!!important!!
-  //UI_Manager.Start();!!important!!
+  attachInterrupt(digitalPinToInterrupt(PUSH_PIN),DoClick, CHANGE);
+  UI_Manager.Start();
   }
 
 
 void loop()
 { 
-  EE_manager.clear();
-  com m;
-  m.MultiRead();
- ComVector* a = m.GetVec();
- a->setName("tamir");
- a->printVec();
- a->writeEE(0);
- Serial.println("----break----");
- ComVector b(195,"Tran0");
-  b.readEE(0);
-  b.printVec();
-  Serial.println(b.GetName());
+ 
+//EE_manager.clear();
+// com m;
+// m.MultiRead();
+// ComVector* a = m.GetVec();
+// a->setName("yosef");
+// a->printVec();
+// a->writeEE();
+// Serial.println("----break----");
+// ComVector b(195,"Tran0");
+//  b.readEE(2);
+//  b.printVec();
+//  Serial.println(b.GetName());
 
 //Serial.println(a->GetLength());
- //Button_manager.CheckLoc();!!important!!
+ Button_manager.CheckLoc();
  
- while(1);
+ 
 }
 
 

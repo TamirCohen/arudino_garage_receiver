@@ -102,3 +102,12 @@ void Menu::setLoc(int n)
 {
 	str_loc=n;
 }
+void Menu::setNames(String arr[],int size)
+{
+	arr_len=size;
+	int j;
+	for(j=0;j<arr_len;j++)
+	{
+		str_array[j]=arr[j];
+	}
+}
