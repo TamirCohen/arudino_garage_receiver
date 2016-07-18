@@ -25,7 +25,7 @@ class ComVector
       boolean Tcorrect(void);
       char read_bit(void);
 	  String name;
-      int _vector[N];//stATIC
+      uint8_t _vector[N];//stATIC
       int _length;
       
 };

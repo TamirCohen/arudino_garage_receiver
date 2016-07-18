@@ -9,7 +9,7 @@ EEPROM_sys::EEPROM_sys(void)
 	last_idx=EEPROM.read(0);
 }
 
-int EEPROM_sys::read_len(int *vec, char idx) 
+int EEPROM_sys::read_len(uint8_t *vec, char idx) 
 {
 	int offset,i,*p;
 	int t_tran_len;
@@ -59,12 +59,12 @@ void EEPROM_sys::writeName(String name,int offset0)
 	}
 	Serial.println("ename:");
 }
-bool EEPROM_sys::write(int *vec, char idx,int len,String name)//vi 
+bool EEPROM_sys::write(uint8_t *vec, char idx,int len,String name)//vi 
 {
 	Serial.print("writing in idx: ");
 	Serial.println((uint8_t)idx);
 	int offset,i;
-	int* p=vec;
+	uint8_t* p=vec;
 	Serial.print("len: ");
 	Serial.println(len);
 	Serial.print("maxlen: ");
@@ -84,30 +84,19 @@ bool EEPROM_sys::write(int *vec, char idx,int len,String name)//vi
 		Serial.println("the vec");
 		for(i=0;i<len;i++)
 		{
-			if(vec[i]<255*4)
-			{
-				EEPROM.put(offset,(char)(p[i]/4));
-			}
-			else
-			{
-				EEPROM.put(offset,255);
-			}
-			offset=offset+sizeof(char);
+			EEPROM.put(offset,p[i]);
 		}
 		return(true);		
 	}
 }
-bool EEPROM_sys::writeL(int *vec ,int len,String name)
+bool EEPROM_sys::writeL(uint8_t *vec ,int len,String name)
 {
-	Serial.print("last idx");
-	Serial.println((uint8_t)last_idx);
 	if(write(vec,last_idx,len,name))
 	{
 		EEPROM.write(0,(uint8_t)last_idx+1);
 		last_idx++;
 		return(true);
 	}
-	Serial.println("didnt write");
 	return(false);
 }
 
@@ -133,8 +122,6 @@ int EEPROM_sys::calc_offset(char idx)
 		EEPROM.get(start_loc,t_tran_len);
 		start_loc = start_loc + sizeof(int) + t_tran_len*sizeof(char);
 	}
-	Serial.print("start_loc: ");
-	Serial.println(start_loc);
 	return start_loc;
 }
 char EEPROM_sys::LastIdx()
@@ -152,12 +139,10 @@ void EEPROM_sys::clear()
 
 String* EEPROM_sys::GetNames()
 {
-	Serial.println("in get names");
 	String* p = new String[last_idx];
 	for(uint8_t i=0;i<(uint8_t)last_idx;i++)
 	{
 		p[i]=read_name(char(i));
-		Serial.println(read_name(char(i)));
 	}
 	return p;
 }

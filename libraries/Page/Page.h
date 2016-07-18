@@ -2,7 +2,7 @@
 #include "LcdString.h"
 #ifndef Page_h
 #define Page_h
-#define max_Str 10
+#define max_Str 3
 
 class Page
 {

@@ -9,10 +9,10 @@ class EEPROM_sys
 {
 	public:
 		EEPROM_sys(void);
-		int read_len(int *vec, char idx) ;
+		int read_len(uint8_t *vec, char idx) ;
 		void clear();
 		String read_name(char idx);
-		bool writeL(int *vec ,int len,String name);
+		bool writeL(uint8_t *vec ,int len,String name);
 		char LastIdx(void);
 		String* GetNames(void);
 		
@@ -21,7 +21,7 @@ class EEPROM_sys
 		int IsFit(int len,char idx);
 		int calc_offset(char idx);
 		void writeName(String name,int offset0);
-		bool write(int *vec, char idx,int len,String name);
+		bool write(uint8_t *vec, char idx,int len,String name);
 		char last_idx;
 		
 };

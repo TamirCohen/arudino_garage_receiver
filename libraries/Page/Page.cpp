@@ -2,7 +2,7 @@
 #include "Page.h"
 #include "LcdString.h"
 #include <global.h>
-#define max_Str 10
+#define max_Str 3
 #define led_length 16
 Page::Page(LcdString* arr)
 {

@@ -9,6 +9,7 @@ class Spage: public Page
 		String row2;
 	public:
 		Spage(String Row1);
+		Spage(String Row1,String Row2);
 		void setRow1(String Row1);
 		void setRow2(String Row2);
 		void Cfocus();

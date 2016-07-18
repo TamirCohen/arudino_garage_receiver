@@ -95,7 +95,7 @@ int equal=0;
 if (_length!=c2._length) return(false);
 for (p=0;p<_length;p++)
 {
-  if (abs(_vector[p]-c2._vector[p])<10) equal++;
+  if (abs(_vector[p]-c2._vector[p])<3) equal++;
 }
 if(equal < _length)
 {return false;}
@@ -129,7 +129,7 @@ void ComVector::printVec(void)
 	int i;
 	for(int i=0;i<_length;i++)
 	{
-		Serial.println(_vector[i]);
+		Serial.println((int)_vector[i]*4);
 	}
 }
 
@@ -149,7 +149,14 @@ while (j<N)
 	c_nc++;
 	if(c_nc == 5)//if 5 in a row
 	{
-	  _vector[j] = c_c+c_nc;//write # (numbers)
+		if(c_c+c_nc>255*4)//we have just 8 bits
+		{
+			_vector[j] = 255;
+		}
+		else
+		{
+			_vector[j] =(uint8_t)((c_c+c_nc)/4); 
+		}
 	  if (mode_count) //if in transmition
 	  {
 		j++;//byte num in transmition
@@ -210,12 +217,12 @@ void ComVector::transmit(void)
 			if(j%2==1)
 			{
 				digitalWrite(TRAN_PIN,HIGH);
-				delayMicroseconds(_vector[j]*Tran_Factor);
+				delayMicroseconds((int)_vector[j]*Tran_Factor*4);//from uint8 to int
 			}
 			else
 			{
 				digitalWrite(TRAN_PIN,LOW);
-				delayMicroseconds(_vector[j]*Tran_Factor);
+				delayMicroseconds((int)_vector[j]*Tran_Factor*4);
 			}
 		}
 	}

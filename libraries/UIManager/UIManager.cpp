@@ -3,47 +3,46 @@
 #include "Spage.h"
 #include "NamePage.h"
 #include "global.h"
+#include "com.h"
+#include "ComVector.h"
 #include <arduino.h>
-UIManager::UIManager()
+UIManager::UIManager() : TransMenu(EE_manager.GetNames(),EE_manager.LastIdx(),0,F("")),SetMenu(SetMenu_arr,3,1,F("Settings")),TransPage(F("Transmiting:")),RecvPage(F("Receiving..."),F("Click the remote")),NPage(F("Long to Save"))
 {
-	String *arrr = EE_manager.GetNames(); 
-    TransMenu=new Menu(arrr,EE_manager.LastIdx(),0,"");
-    String arr[3] ={"New","Delete","Transmit"};
-    SetMenu=new Menu(arr,3,1,"Settings");
-	TransPage=new Spage("Transmiting:");
-	NPage =new NamePage("Long to Save");
-	SetMenu->Cfocus();
+	SetMenu.Cfocus();
 
 }
 boolean UIManager::IsMenu()
 {
-	return(TransMenu->IsFocus()||SetMenu->IsFocus());
+	return(TransMenu.IsFocus()||SetMenu.IsFocus());
 }
 void UIManager::Start()
 {
-	SetMenu->show();
-	TransMenu->show();
+	SetMenu.show();
+	TransMenu.show();
 }
 void UIManager::LongClick()
 {
 	if(IsMenu())
 	{
-		TransMenu->Cfocus();
-		SetMenu->Cfocus();
-		SetMenu->setLoc(0);
-		TransMenu->show();
-		SetMenu->show();
+		TransMenu.Cfocus();
+		SetMenu.Cfocus();
+		SetMenu.setLoc(0);
+		TransMenu.show();
+		SetMenu.show();
 	}
-	if(NPage->IsFocus())
-	{
-		
-		String name =NPage->GetName()
+	if(NPage.IsFocus())
+	{	
+		String name =NPage.GetName();
 		if(name!="")
 		{
-			NPage->Cfocus();
-			TransMenu->Cfocus();
-			TransMenu->show();
-			SetMenu->show();
+			ComVector* a = m.GetVec();
+			a->writeEE();
+			TransMenu.setNames(EE_manager.GetNames(),EE_manager.LastIdx());
+			m.clean();
+			NPage.Cfocus();
+			TransMenu.Cfocus();
+			TransMenu.show();
+			SetMenu.show();
 			
 			//add transmition in eeprom-get str
 		}
@@ -57,70 +56,78 @@ void UIManager::ShortClick()
 {
 	if(IsMenu())
 	{
-		if(TransMenu->IsFocus())
+		if(TransMenu.IsFocus())
 		{
-			TransMenu->Cfocus();
-			TransPage->setRow2(TransMenu->getStr());
-			TransPage->Cfocus();
-			TransPage->show();
+			TransMenu.Cfocus();
+			TransPage.setRow2(TransMenu.getStr());
+			TransPage.Cfocus();
+			TransPage.show();
 			delay(250000);////transmit!!
-			TransPage->Cfocus();
-			TransMenu->Cfocus();
-			TransMenu->show();
-			SetMenu->show();
+			TransPage.Cfocus();
+			TransMenu.Cfocus();
+			TransMenu.show();
+			SetMenu.show();
 		}
-		else if(SetMenu->getStr()=="Transmit")
+		else if(SetMenu.getStr()=="Transmit")
 		{
-			SetMenu->Cfocus();
-			TransPage->setRow2(TransMenu->getStr());
-			TransPage->Cfocus();
-			TransPage->show();
+			SetMenu.Cfocus();
+			TransPage.setRow2(TransMenu.getStr());
+			TransPage.Cfocus();
+			TransPage.show();
 			delay(250000);//transmit!!
-			TransPage->Cfocus();
-			SetMenu->Cfocus();
-			SetMenu->show();
-			TransMenu->show();
+			TransPage.Cfocus();
+			SetMenu.Cfocus();
+			SetMenu.show();
+			TransMenu.show();
 		}
-		else if(SetMenu->getStr()=="New")
+		else if(SetMenu.getStr()=="New")
 		{
-			SetMenu->Cfocus();
-			NPage->Cfocus();
-			NPage->show();
+			SetMenu.Cfocus();
+			RecvPage.Cfocus();
+			RecvPage.show();
+			Serial.println("print stuff");
+			Serial.println("started multyread");
+			m.MultiRead();
+			Serial.println("finsished multy read");
+			//finshed getting the transmition
+			RecvPage.Cfocus();
+			NPage.Cfocus();
+			NPage.show();
 		}
 	}
-	else if(NPage)
+	else if(NPage.IsFocus())
 	{
-		NPage->next();
-		NPage->show();
+		NPage.next();
+		NPage.show();
 	}
 }
 void UIManager::Right()
 {
 	if(IsMenu())
 	{
-		TransMenu->right();
-		SetMenu->right();
-		TransMenu->show();
-		SetMenu->show();
+		TransMenu.right();
+		SetMenu.right();
+		TransMenu.show();
+		SetMenu.show();
 	}
-	if(NPage->IsFocus())
+	if(NPage.IsFocus())
 	{
-		NPage->right();
-		NPage->show();
+		NPage.right();
+		NPage.show();
 	}
 }
 void UIManager::Left()
 {
 	if(IsMenu())
 	{
-		TransMenu->left();
-		SetMenu->left();
-		TransMenu->show();
-		SetMenu->show();
+		TransMenu.left();
+		SetMenu.left();
+		TransMenu.show();
+		SetMenu.show();
 	}
-	if(NPage->IsFocus())
+	if(NPage.IsFocus())
 	{
-		NPage->left();
-		NPage->show();
+		NPage.left();
+		NPage.show();
 	}
 }

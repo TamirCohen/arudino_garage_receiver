@@ -1,6 +1,7 @@
 #ifndef com_h
 #define com_h
 #include "Arduino.h" 
+#include "ComVector.h"
 class com
   {
     private:
@@ -8,6 +9,7 @@ class com
     public:
       void MultiRead(void);
       ComVector* GetVec(void);
+	  void clean(void);
        
     
   };
