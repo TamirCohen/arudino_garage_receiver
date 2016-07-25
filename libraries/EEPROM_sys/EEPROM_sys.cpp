@@ -149,24 +149,39 @@ String* EEPROM_sys::GetNames()
 	}
 	return p;
 }
-void EEPROM_sys::Delte(char idx)
+void EEPROM_sys::Delete(char idx)
 {
-	if(last_idx)
-	int offset = calc_offset(idx);
-	int last = calc_offset(idx+1);
-	for(int i=offset;i<last;i++)
+	if(last_idx>0)
 	{
-		EEPROM.write(i,0);
-	}
-	if(last_idx!=idx)
-	{
-		for(i=last;i<calc_offset(last_idx);i++)
+		Serial.print(F("idx"));
+		Serial.println((uint8_t)idx);
+		uint8_t temp;
+		int offset = calc_offset(idx);
+		Serial.print(F("offset: "));
+		Serial.println(offset);
+		int last = calc_offset(idx+1);
+		Serial.print(F("last: "));
+		Serial.println(last);
+		int last_bit = calc_offset(last_idx);
+		int i;
+		Serial.println(F("First loop:"));
+		Serial.print(F("last_idx"));
+		Serial.println(last_idx);
+		for(i=offset;i<last;i++)
 		{
-			EEPROM.write(i+offset-last,EEPROM.read(i));
 			EEPROM.write(i,0);
 		}
+		Serial.print(F("super last"));
+		Serial.println(last_bit);
+		for(i=last;i<last_bit;i++)
+		{
+			EEPROM.get(i,temp);
+			Serial.println(temp);
+			EEPROM.write(i+offset-last,temp);
+			EEPROM.write(i,0);
+		}
+		EEPROM.write(0,(uint8_t)last_idx-1);
+		last_idx--;
 	}
-	EEPROM.write(0,(uint8_t)last_idx-1);
-	last_idx--;
 }
 

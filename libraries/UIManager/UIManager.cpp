@@ -93,7 +93,6 @@ void UIManager::ShortClick()
 		}
 		else if(SetMenu.getStr()==F("New"))
 		{
-			Serial.println(F("NewTrans"));
 			SetMenu.Cfocus();
 			RecvPage.Cfocus();
 			RecvPage.show();
@@ -102,6 +101,17 @@ void UIManager::ShortClick()
 			RecvPage.Cfocus();
 			NPage.Cfocus();
 			NPage.show();
+		}
+		else if(SetMenu.getStr()==F("Delete"))
+		{
+			EE_manager.Delete((char)TransMenu.getLoc());
+			SetMenu.Cfocus();
+			TransMenu.Cfocus();
+			TransMenu.setNames(EE_manager.GetNames(),EE_manager.LastIdx());
+			TransMenu.setLoc(0);
+			SetMenu.show();
+			TransMenu.show();
+			
 		}
 	}
 	else if(NPage.IsFocus())

@@ -8,6 +8,7 @@ NamePage::NamePage(String Row2)
 {
 	row2=Row2;
 	loc=1;
+	lcd_array[str_pos].reserve(14);
 	lcd_array[info_pos].SetText(Row2);
 	lcd_array[info_pos].SetRow(1);
 	lcd_array[info_pos].SetColumn(mid_pos(row2));

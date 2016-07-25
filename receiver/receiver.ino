@@ -50,6 +50,8 @@ void loop()
 //EE_manager.clear();
 //Serial.println(F("finshed"));
 //while(1);
+//EE_manager.read_all();
+//while(1);
 // com m;
 // m.MultiRead();
 // ComVector* a = m.GetVec();
