@@ -15,15 +15,13 @@ void com::clean()
 }
 void com::MultiRead()
 {
+	bool same;
 	char VerfStat=0;
 	while(VerfStat!=1)
 	{
-
-	  digitalWrite(LED_PIN,HIGH);
-	  digitalWrite(LED_PIN,LOW);//finish
 	  if(_ArrVec[VerfStat!=0].receive())
 	  {
-		bool same=_ArrVec[0].compare(_ArrVec[1]);      
+		same=_ArrVec[0].compare(_ArrVec[1]);      
 		if (same|(!VerfStat)) 
 		{
 		  VerfStat = ((!VerfStat) ? 5 : (VerfStat-1));//if status=0->5 else status--
@@ -40,4 +38,14 @@ void com::MultiRead()
 	  }
 	_ArrVec[1].clean_arr();//clean the compare arr
 	}
+}
+void com::transmit(uint8_t loc)
+{
+	Serial.println(F("loc: "));
+	Serial.println(loc);
+	_ArrVec[0].readEE(loc);
+	_ArrVec[0].transmit();
+	Serial.println(F("Transmited"));
+	_ArrVec[0].printVec();//to del
+	clean();
 }

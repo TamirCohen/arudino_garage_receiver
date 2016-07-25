@@ -15,7 +15,11 @@ LcdString::LcdString()
 {
 	Row=0;
 	Column=0;
-	Text="";
+	Text=F("");
+}
+void LcdString::reserve(uint8_t n)
+{
+	Text.reserve(n);
 }
 void LcdString::Display()
 {

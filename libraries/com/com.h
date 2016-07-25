@@ -10,6 +10,7 @@ class com
       void MultiRead(void);
       ComVector* GetVec(void);
 	  void clean(void);
+	  void transmit(uint8_t loc);
        
     
   };

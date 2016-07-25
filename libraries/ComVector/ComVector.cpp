@@ -9,7 +9,7 @@
 #define RCV_PIN 10
 #define DEBUG false
 #define Tran_Factor 5.6
-#define Tran_Num 4
+#define Tran_Num 5
 #define TRAN_PIN 9
 
 

@@ -21,15 +21,26 @@ int EEPROM_sys::read_len(uint8_t *vec, char idx)
 	for(i=0;i<t_tran_len;i++)
 	{
 		EEPROM.get(offset,temp);
-		vec[i]=((int)temp)*4;
-		offset = offset + sizeof(char);
+		vec[i]=temp;
+		Serial.println(vec[i]);
+		offset = offset +sizeof(char);
+			
 	}
 	return(t_tran_len);
 }
-
+void EEPROM_sys::read_all()
+{
+	uint8_t temp;
+	int offset=0;
+	for (int j=0;j<size;j++)
+	{
+		EEPROM.get(offset,temp);
+		Serial.println(temp);
+		offset = offset + sizeof(char);
+	}
+}
 String EEPROM_sys::read_name(char idx)
 {
-	Serial.println("reading name");
 	int i;
 	int t_str_len;
 	int offset = calc_offset(idx);
@@ -37,6 +48,7 @@ String EEPROM_sys::read_name(char idx)
 	for(int i=0;i<buf_len;i++)
 	{
 	  buffer1[i]=EEPROM.read(offset);
+	  Serial.println((uint8_t)buffer1[i]);
 	  offset = offset +sizeof(char);
 	}
 	String ret(buffer1);
@@ -50,29 +62,18 @@ void EEPROM_sys::writeName(String name,int offset0)
 	static char buffer[buf_len];
 	Str_name.toCharArray(buffer,buf_len);
 	int offset = offset0;
-	Serial.println("name:");
 	for(int i=0;i<buf_len;i++)
 	{
 	  EEPROM.write(offset,(uint8_t)buffer[i]);
-	  Serial.println((uint8_t)buffer[i]);
 	  offset = offset +sizeof(char);
 	}
-	Serial.println("ename:");
 }
 bool EEPROM_sys::write(uint8_t *vec, char idx,int len,String name)//vi 
 {
-	Serial.print("writing in idx: ");
-	Serial.println((uint8_t)idx);
 	int offset,i;
 	uint8_t* p=vec;
-	Serial.print("len: ");
-	Serial.println(len);
-	Serial.print("maxlen: ");
-	Serial.println(max_vec_len);
 	if (len>max_vec_len) return(false);//checking
 	offset = IsFit(len,idx);//calc offset
-	Serial.print("offset: ");
-	Serial.println(offset);
 	if (offset<0) return(false);//checking
 	else
 	{
@@ -81,10 +82,12 @@ bool EEPROM_sys::write(uint8_t *vec, char idx,int len,String name)//vi
 		offset=offset+buf_len*sizeof(char);
 		EEPROM.put(offset,len);
 		offset = offset +sizeof(int);
-		Serial.println("the vec");
+		Serial.println("writeEE");
 		for(i=0;i<len;i++)
 		{
 			EEPROM.put(offset,p[i]);
+			Serial.println((uint8_t)p[i]);
+			offset = offset +sizeof(char);
 		}
 		return(true);		
 	}
@@ -145,5 +148,25 @@ String* EEPROM_sys::GetNames()
 		p[i]=read_name(char(i));
 	}
 	return p;
+}
+void EEPROM_sys::Delte(char idx)
+{
+	if(last_idx)
+	int offset = calc_offset(idx);
+	int last = calc_offset(idx+1);
+	for(int i=offset;i<last;i++)
+	{
+		EEPROM.write(i,0);
+	}
+	if(last_idx!=idx)
+	{
+		for(i=last;i<calc_offset(last_idx);i++)
+		{
+			EEPROM.write(i+offset-last,EEPROM.read(i));
+			EEPROM.write(i,0);
+		}
+	}
+	EEPROM.write(0,(uint8_t)last_idx-1);
+	last_idx--;
 }
 

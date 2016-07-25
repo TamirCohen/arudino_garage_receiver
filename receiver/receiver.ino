@@ -3,7 +3,7 @@
 #include <EEPROM_sys.h>
 #include <ComVector.h>
 #include <com.h>
-//#include <UIManager.h>
+#include <UIManager.h>
 #include <Button.h>
 #include <LiquidCrystal.h>
 #include <LcdString.h>
@@ -30,7 +30,7 @@ void DoClick()
 void setup()
 {
   Serial.begin(9600);//configuration
-  Serial.println("begin trans");
+  Serial.println(F("begin trans"));
   lcd.begin(16, 2);
   pinMode(RCV_PIN,INPUT);//data from reciver
   pinMode(SCOPE_PIN,OUTPUT);//for debugging-scope
@@ -41,13 +41,15 @@ void setup()
   pinMode(PUSH_PIN,INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(PUSH_PIN),DoClick, CHANGE);
   UI_Manager.Start();
-  }
+}
 
 
 void loop()
 { 
  
 //EE_manager.clear();
+//Serial.println(F("finshed"));
+//while(1);
 // com m;
 // m.MultiRead();
 // ComVector* a = m.GetVec();

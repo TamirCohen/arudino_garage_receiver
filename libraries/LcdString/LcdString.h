@@ -14,6 +14,7 @@ class LcdString
 		void SetText(String text);
 		void SetRow(int row);
 		void SetColumn(int col);
+		void reserve(uint8_t);
 	private:
 		int Column;
 		int Row;

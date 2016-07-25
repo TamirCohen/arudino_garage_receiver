@@ -15,6 +15,8 @@ class EEPROM_sys
 		bool writeL(uint8_t *vec ,int len,String name);
 		char LastIdx(void);
 		String* GetNames(void);
+		void read_all(void);
+		void Delete(char idx);
 		
 	private:
 		int size;

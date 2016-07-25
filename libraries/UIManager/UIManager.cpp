@@ -8,8 +8,15 @@
 #include <arduino.h>
 UIManager::UIManager() : TransMenu(EE_manager.GetNames(),EE_manager.LastIdx(),0,F("")),SetMenu(SetMenu_arr,3,1,F("Settings")),TransPage(F("Transmiting:")),RecvPage(F("Receiving..."),F("Click the remote")),NPage(F("Long to Save"))
 {
-	SetMenu.Cfocus();
-
+	if(EE_manager.LastIdx()==0)
+	{
+		TransMenu.Cfocus();
+		
+	}
+	else
+	{
+		SetMenu.Cfocus();
+	}
 }
 boolean UIManager::IsMenu()
 {
@@ -33,9 +40,12 @@ void UIManager::LongClick()
 	if(NPage.IsFocus())
 	{	
 		String name =NPage.GetName();
-		if(name!="")
+		Serial.println(name);
+		if(name!=F(""))
 		{
 			ComVector* a = m.GetVec();
+			a->setName(name);
+			a->printVec();
 			a->writeEE();
 			TransMenu.setNames(EE_manager.GetNames(),EE_manager.LastIdx());
 			m.clean();
@@ -62,33 +72,32 @@ void UIManager::ShortClick()
 			TransPage.setRow2(TransMenu.getStr());
 			TransPage.Cfocus();
 			TransPage.show();
-			delay(250000);////transmit!!
+			m.transmit(TransMenu.getLoc());
+			Serial.println(F("Transmiting!"));
 			TransPage.Cfocus();
 			TransMenu.Cfocus();
 			TransMenu.show();
 			SetMenu.show();
 		}
-		else if(SetMenu.getStr()=="Transmit")
+		else if(SetMenu.getStr()==F("Transmit"))
 		{
 			SetMenu.Cfocus();
 			TransPage.setRow2(TransMenu.getStr());
 			TransPage.Cfocus();
 			TransPage.show();
-			delay(250000);//transmit!!
+			m.transmit(TransMenu.getLoc());
 			TransPage.Cfocus();
 			SetMenu.Cfocus();
 			SetMenu.show();
 			TransMenu.show();
 		}
-		else if(SetMenu.getStr()=="New")
+		else if(SetMenu.getStr()==F("New"))
 		{
+			Serial.println(F("NewTrans"));
 			SetMenu.Cfocus();
 			RecvPage.Cfocus();
 			RecvPage.show();
-			Serial.println("print stuff");
-			Serial.println("started multyread");
 			m.MultiRead();
-			Serial.println("finsished multy read");
 			//finshed getting the transmition
 			RecvPage.Cfocus();
 			NPage.Cfocus();
