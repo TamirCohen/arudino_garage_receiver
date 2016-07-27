@@ -121,6 +121,34 @@ void UIManager::ShortClick()
 				
 			}
 		}
+		else if(SetMenu.getStr()==F("Spy Mode"))
+		{
+			SetMenu.Cfocus();
+			RecvPage.setRow2("Spy Mode");
+			RecvPage.Cfocus();
+			RecvPage.show();
+			CShort(false);
+			Serial.println(F("killed flag"));
+			m.MultiRead(1);
+			//finshed getting the transmition
+			Serial.println(F("finshed reading"));
+			if(LongPress||ShortPress)
+			{
+				Serial.println(F("noticed flag outside"));
+				RecvPage.Cfocus();
+				SetMenu.Cfocus();
+				SetMenu.show();
+				TransMenu.show();
+			}
+			else
+			{
+				Serial.println(F("didnt notice flag outside"));
+				RecvPage.Cfocus();
+				NPage.Cfocus();
+				NPage.show();
+				
+			}
+		}
 		else if(SetMenu.getStr()==F("Delete"))
 		{
 			EE_manager.Delete((char)TransMenu.getLoc());
@@ -129,8 +157,8 @@ void UIManager::ShortClick()
 			SetMenu.Cfocus();
 			TransMenu.Cfocus();
 			SetMenu.show();
-			TransMenu.show();
 		}
+		
 	}
 	else if(NPage.IsFocus())
 	{
