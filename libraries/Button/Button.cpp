@@ -43,7 +43,6 @@ int Button::GetLoc(void)
 }
 void Button::Click(void)
 {
-	
 	if(digitalRead(PUSH_PIN)==LOW)
 	{	
 		LastClick = millis();
@@ -52,12 +51,12 @@ void Button::Click(void)
 	{
 		if(millis()-LastClick>900)
 		{
-			UI_Manager.LongClick();
+			UI_Manager.CLong(true);
 		}
 		else if(millis()-LastClick>50)
 		{
-			UI_Manager.ShortClick();
+			UI_Manager.CShort(true);
 		}
 	}
-	
+
 }

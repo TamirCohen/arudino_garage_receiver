@@ -1,6 +1,7 @@
 #include "Arduino.h"
 #include "ComVector.h"
 #include "com.h"
+#include "global.h"
 
 #define LED_PIN 13
 ComVector* com::GetVec()
@@ -13,18 +14,20 @@ void com::clean()
 	_ArrVec[0].clean_arr();
 	_ArrVec[1].clean_arr();
 }
-void com::MultiRead()
+void com::MultiRead(uint8_t n)
 {
 	bool same;
 	char VerfStat=0;
-	while(VerfStat!=1)
+	Serial.println(UI_Manager.event());
+	while(VerfStat!=1 && !UI_Manager.event())
 	{
+	  Serial.println("loop");
 	  if(_ArrVec[VerfStat!=0].receive())
-	  {
-		same=_ArrVec[0].compare(_ArrVec[1]);      
+	  { 
+		same=_ArrVec[0].compare(_ArrVec[1]);
 		if (same|(!VerfStat)) 
 		{
-		  VerfStat = ((!VerfStat) ? 5 : (VerfStat-1));//if status=0->5 else status--
+		  VerfStat = ((!VerfStat) ? n : (VerfStat-1));//if status=0->5 else status--
 		}
 		else//if not stat 0 or not tottaly equals
 		{
@@ -38,14 +41,25 @@ void com::MultiRead()
 	  }
 	_ArrVec[1].clean_arr();//clean the compare arr
 	}
+	if(UI_Manager.event())
+	{
+		Serial.println("noticed flag inside");
+		clean();
+	}
 }
 void com::transmit(uint8_t loc)
 {
-	Serial.println(F("loc: "));
-	Serial.println(loc);
 	_ArrVec[0].readEE(loc);
 	_ArrVec[0].transmit();
 	Serial.println(F("Transmited"));
-	_ArrVec[0].printVec();//to del
+	_ArrVec[0].printVec();
 	clean();
+}
+void com::Cinterupt(void)
+{
+	interupt=!interupt;
+}
+boolean com::status(void)
+{
+	return !interupt;
 }

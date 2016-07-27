@@ -3,14 +3,14 @@
 #include <EEPROM_sys.h>
 #include <ComVector.h>
 #include <com.h>
+#include <LiquidCrystal.h>
 #include <UIManager.h>
 #include <Button.h>
-#include <LiquidCrystal.h>
 #include <LcdString.h>
 #include <global.h>
 #include <Menu.h>
 #include <arduino.h>
-#include <NamePage.h>//to del
+#include <NamePage.h>//to deMl
 
 #define RCV_PIN 10
 #define LED_PIN 13
@@ -66,8 +66,13 @@ void loop()
 
 //Serial.println(a->GetLength());
  Button_manager.CheckLoc();
+ UI_Manager.CheckClick();
+  
+  
+ }
  
  
-}
+ 
+
 
 

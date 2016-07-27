@@ -25,6 +25,7 @@ void LcdString::Display()
 {
 	lcd.setCursor(Column,Row);
 	lcd.print(Text);
+	
 }
 String LcdString::GetText()
 {

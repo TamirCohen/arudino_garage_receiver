@@ -35,6 +35,7 @@ void Spage::setRow2(String Row2)
 void Spage::setRow1(String Row1)
 {
 	row1=Row1;
+	
 }
 void Spage::Cfocus()
 {

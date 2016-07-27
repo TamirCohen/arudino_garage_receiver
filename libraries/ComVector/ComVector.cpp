@@ -8,8 +8,8 @@
 #define ZeroNum 1000
 #define RCV_PIN 10
 #define DEBUG false
-#define Tran_Factor 5.6
-#define Tran_Num 5
+#define Tran_Factor 6.83
+#define Tran_Num 50
 #define TRAN_PIN 9
 
 
@@ -82,11 +82,12 @@ for(p=0;p<N;p++)
   {
 	return(true);
   }
-  if(_vector[p]<10)
+  if(_vector[p]<3)
   {
 	return(false);
   }
 }
+return(true);
 }
 boolean ComVector::compare(ComVector &c2)
 {
@@ -141,7 +142,7 @@ bool state = 0;
 int c_nc = 0;//not correct
 int c_c = 0;
 bool mode_count = false;
-while (j<N)
+while (j<N && !UI_Manager.event())
 {
   c=read_bit();//read high/low - 1/0
   if(!(c==state))//if Read isnt state
@@ -155,7 +156,8 @@ while (j<N)
 		}
 		else
 		{
-			_vector[j] =(uint8_t)((c_c+c_nc)/4); 
+			_vector[j] =(uint8_t)((c_c+c_nc)/4);
+			//Serial.println(c_c+c_nc);
 		}
 	  if (mode_count) //if in transmition
 	  {
@@ -171,7 +173,11 @@ while (j<N)
 	  else
 	  {
 		mode_count = zeroes(state,c_c);//check new transmition?
-		if (mode_count) j++;//if in transmition count byte        
+		if (mode_count) 
+		{
+			j++;//if in transmition count byte
+			//Serial.println("started transmition");
+		}        
 	  }
 	  state=!state;//change state
 	  c_c=0;
@@ -185,7 +191,13 @@ while (j<N)
 	c_nc=0;
   }
 }
+if(UI_Manager.event())
+{
+	return false;
+}
+//printVec();
 _length = j;
+//Serial.println("left rec");
 return(Tcorrect());
 }
 
@@ -209,6 +221,8 @@ void ComVector::setName(String Name)
 }
 void ComVector::transmit(void)
 {
+	Serial.print("_length: ");
+	Serial.println(_length);
 	int i,j;
 	for(i=0;i<Tran_Num;i++)
 	{

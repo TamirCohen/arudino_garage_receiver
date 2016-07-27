@@ -6,7 +6,7 @@
 #include "com.h"
 #include "ComVector.h"
 #include <arduino.h>
-UIManager::UIManager() : TransMenu(EE_manager.GetNames(),EE_manager.LastIdx(),0,F("")),SetMenu(SetMenu_arr,3,1,F("Settings")),TransPage(F("Transmiting:")),RecvPage(F("Receiving..."),F("Click the remote")),NPage(F("Long to Save"))
+UIManager::UIManager() : TransMenu(EE_manager.GetNames(),EE_manager.LastIdx(),0,F("")),SetMenu(SetMenu_arr,4,1,F("Settings")),TransPage(F("Transmiting:")),RecvPage(F("Receiving..."),F("Click the remote")),NPage(F("Long to Save"))
 {
 	if(EE_manager.LastIdx()==0)
 	{
@@ -17,6 +17,8 @@ UIManager::UIManager() : TransMenu(EE_manager.GetNames(),EE_manager.LastIdx(),0,
 	{
 		SetMenu.Cfocus();
 	}
+	LongPress=false;
+	ShortPress=false;
 }
 boolean UIManager::IsMenu()
 {
@@ -40,7 +42,6 @@ void UIManager::LongClick()
 	if(NPage.IsFocus())
 	{	
 		String name =NPage.GetName();
-		Serial.println(name);
 		if(name!=F(""))
 		{
 			ComVector* a = m.GetVec();
@@ -49,6 +50,7 @@ void UIManager::LongClick()
 			a->writeEE();
 			TransMenu.setNames(EE_manager.GetNames(),EE_manager.LastIdx());
 			m.clean();
+			SetMenu.setLoc(0);
 			NPage.Cfocus();
 			TransMenu.Cfocus();
 			TransMenu.show();
@@ -94,24 +96,40 @@ void UIManager::ShortClick()
 		else if(SetMenu.getStr()==F("New"))
 		{
 			SetMenu.Cfocus();
+			RecvPage.setRow2("Click The Remote");
 			RecvPage.Cfocus();
 			RecvPage.show();
-			m.MultiRead();
+			CShort(false);
+			Serial.println(F("killed flag"));
+			m.MultiRead(5);
 			//finshed getting the transmition
-			RecvPage.Cfocus();
-			NPage.Cfocus();
-			NPage.show();
+			Serial.println(F("finshed reading"));
+			if(LongPress||ShortPress)
+			{
+				Serial.println(F("noticed flag outside"));
+				RecvPage.Cfocus();
+				SetMenu.Cfocus();
+				SetMenu.show();
+				TransMenu.show();
+			}
+			else
+			{
+				Serial.println(F("didnt notice flag outside"));
+				RecvPage.Cfocus();
+				NPage.Cfocus();
+				NPage.show();
+				
+			}
 		}
 		else if(SetMenu.getStr()==F("Delete"))
 		{
 			EE_manager.Delete((char)TransMenu.getLoc());
-			SetMenu.Cfocus();
-			TransMenu.Cfocus();
 			TransMenu.setNames(EE_manager.GetNames(),EE_manager.LastIdx());
 			TransMenu.setLoc(0);
+			SetMenu.Cfocus();
+			TransMenu.Cfocus();
 			SetMenu.show();
 			TransMenu.show();
-			
 		}
 	}
 	else if(NPage.IsFocus())
@@ -149,4 +167,35 @@ void UIManager::Left()
 		NPage.left();
 		NPage.show();
 	}
+}
+void UIManager::CLong(boolean l)
+{
+	LongPress = l;
+}
+void UIManager::CShort(boolean s)
+{
+	digitalWrite(13,HIGH);
+	ShortPress = s;
+	digitalWrite(13,LOW);
+}
+boolean UIManager::CheckClick()
+{
+	if(LongPress)
+	{
+		LongClick();
+		LongPress = false;
+		return(true);
+	}
+	if(ShortPress)
+	{
+		Serial.println(F("short fleg up"));
+		ShortClick();
+		ShortPress = false;
+		return(true);
+	}
+	return(false);
+}
+boolean UIManager::event()
+{
+	return(ShortPress||LongPress);
 }

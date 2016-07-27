@@ -6,11 +6,14 @@ class com
   {
     private:
       ComVector _ArrVec[2]; 
+	  bool interupt;
     public:
-      void MultiRead(void);
+      void MultiRead(uint8_t n);
       ComVector* GetVec(void);
 	  void clean(void);
 	  void transmit(uint8_t loc);
+	  void Cinterupt(void);
+	  boolean status(void);
        
     
   };
