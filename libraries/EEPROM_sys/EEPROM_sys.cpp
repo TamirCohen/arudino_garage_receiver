@@ -136,9 +136,10 @@ void EEPROM_sys::clear()
 	{
 		EEPROM.write(i,0);
 	}
+	last_idx=0;
 }
 
-String* EEPROM_sys::GetNames()
+String* EEPROM_sys::GetNames()//need to delete pointer
 {
 	String* p = new String[last_idx];
 	for(uint8_t i=0;i<(uint8_t)last_idx;i++)

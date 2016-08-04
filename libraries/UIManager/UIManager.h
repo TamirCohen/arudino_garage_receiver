@@ -21,7 +21,7 @@ class UIManager
 		boolean CheckClick();
 		boolean event();
 	private:
-		String SetMenu_arr[4]={"New","Spy Mode","Delete","Transmit"};
+		String SetMenu_arr[5]={"New","Spy Mode","Delete","Reset All","Transmit"};
 		Menu TransMenu;
 		Menu SetMenu;
 		Spage TransPage;

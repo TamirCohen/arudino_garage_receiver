@@ -115,4 +115,11 @@ void Menu::setNames(String arr[],int size)
 		str_array[j]=arr[j];
 	}
 }
+void Menu::delNames()
+{
+	for(int j=0;j<arr_len;j++)
+	{
+		str_array[j]=F("");
+	}
+}
 

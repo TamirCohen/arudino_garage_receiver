@@ -16,6 +16,7 @@ class Menu : public Page
 		String getStr();
 		void setLoc(int n);
 		void setNames(String arr[],int size);
+		void delNames();
 	private:
 		String str_array[max_length];
 		void update_menu(int move);

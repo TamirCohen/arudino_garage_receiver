@@ -6,7 +6,7 @@
 #include "com.h"
 #include "ComVector.h"
 #include <arduino.h>
-UIManager::UIManager() : TransMenu(EE_manager.GetNames(),EE_manager.LastIdx(),0,F("")),SetMenu(SetMenu_arr,4,1,F("Settings")),TransPage(F("Transmiting:")),RecvPage(F("Receiving..."),F("Click the remote")),NPage(F("Long to Save"))
+UIManager::UIManager() : TransMenu(EE_manager.GetNames(),EE_manager.LastIdx(),0,F("")),SetMenu(SetMenu_arr,5,1,F("Settings")),TransPage(F("Transmiting:")),RecvPage(F("Receiving..."),F("Click the remote")),NPage(F("Long to Save"))
 {
 	if(EE_manager.LastIdx()==0)
 	{
@@ -157,6 +157,19 @@ void UIManager::ShortClick()
 			SetMenu.Cfocus();
 			TransMenu.Cfocus();
 			SetMenu.show();
+			TransMenu.show();
+		}
+		else if(SetMenu.getStr()==F("Reset All"))
+		{
+			EE_manager.clear();
+			TransMenu.delNames();
+			SetMenu.setLoc(0);
+			SetMenu.Cfocus();
+			TransMenu.Cfocus();
+			SetMenu.Cfocus();
+			TransMenu.Cfocus();
+			SetMenu.show();
+			TransMenu.show();
 		}
 		
 	}
