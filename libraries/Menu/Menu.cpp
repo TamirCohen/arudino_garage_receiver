@@ -6,6 +6,7 @@
 #define arrow_left_loc 1
 #define arrow_right_loc 2
 #define max_len 14
+#define max_length_menu 10
 Menu::Menu(String arr[],int size,int Row,String Message):Page()
 {
 	row=Row;
@@ -92,6 +93,7 @@ void Menu::Cfocus()
 	{
 		lcd_array[arrow_left_loc].SetText(F(""));
 		lcd_array[arrow_right_loc].SetText(F(""));
+		lcd_array[text_loc].SetText(str_array[str_loc]);
 	}
 }
 int Menu::getLoc()
@@ -108,11 +110,17 @@ void Menu::setLoc(int n)
 }
 void Menu::setNames(String arr[],int size)
 {
+	
 	arr_len=size;
-	int j;
+	int j;		
 	for(j=0;j<arr_len;j++)
 	{
 		str_array[j]=arr[j];
+	}
+	
+	for(j=arr_len;j<max_length_menu;j++)
+	{
+		str_array[j]="";
 	}
 }
 

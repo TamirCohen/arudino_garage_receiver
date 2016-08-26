@@ -6,7 +6,7 @@
 #include "com.h"
 #include "ComVector.h"
 #include <arduino.h>
-UIManager::UIManager() : TransMenu(EE_manager.GetNames(),EE_manager.LastIdx(),0,F("")),SetMenu(SetMenu_arr,4,1,F("Settings")),TransPage(F("Transmiting:")),RecvPage(F("Receiving..."),F("Click the remote")),NPage(F("Long to Save"))
+UIManager::UIManager() : TransMenu(EE_manager.GetNames(),EE_manager.LastIdx(),0,F("")),SetMenu(SetMenu_arr,5,1,F("Settings")),TransPage(F("Transmiting:")),RecvPage(F("Receiving..."),F("Click the remote")),NPage(F("Long to Save"))
 {
 	if(EE_manager.LastIdx()==0)
 	{
@@ -48,7 +48,9 @@ void UIManager::LongClick()
 			a->setName(name);
 			a->printVec();
 			a->writeEE();
-			TransMenu.setNames(EE_manager.GetNames(),EE_manager.LastIdx());
+			String* tmp = EE_manager.GetNames();
+			TransMenu.setNames(tmp,EE_manager.LastIdx());
+			delete [] tmp;
 			m.clean();
 			SetMenu.setLoc(0);
 			NPage.Cfocus();
@@ -129,7 +131,7 @@ void UIManager::ShortClick()
 			RecvPage.show();
 			CShort(false);
 			Serial.println(F("killed flag"));
-			m.MultiRead(1);
+			m.MultiRead(2);
 			//finshed getting the transmition
 			Serial.println(F("finshed reading"));
 			if(LongPress||ShortPress)
@@ -152,11 +154,30 @@ void UIManager::ShortClick()
 		else if(SetMenu.getStr()==F("Delete"))
 		{
 			EE_manager.Delete((char)TransMenu.getLoc());
-			TransMenu.setNames(EE_manager.GetNames(),EE_manager.LastIdx());
+			String* tmp = EE_manager.GetNames();
+			TransMenu.setNames(tmp,EE_manager.LastIdx());
+			delete [] tmp;
 			TransMenu.setLoc(0);
+			SetMenu.setLoc(0);
 			SetMenu.Cfocus();
 			TransMenu.Cfocus();
 			SetMenu.show();
+			TransMenu.show();
+		}
+		else if(SetMenu.getStr()==F("Reset"))
+		{
+			EE_manager.clear();
+			String* tmp = EE_manager.GetNames();
+			TransMenu.setNames(tmp,EE_manager.LastIdx());
+			delete [] tmp;
+			TransMenu.setLoc(0);
+			SetMenu.setLoc(0);
+			SetMenu.Cfocus();
+			TransMenu.Cfocus();
+			SetMenu.Cfocus();
+			TransMenu.Cfocus();
+			SetMenu.show();
+			TransMenu.show();
 		}
 		
 	}

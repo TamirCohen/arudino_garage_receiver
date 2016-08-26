@@ -136,6 +136,7 @@ void EEPROM_sys::clear()
 	{
 		EEPROM.write(i,0);
 	}
+	last_idx=0;
 }
 
 String* EEPROM_sys::GetNames()

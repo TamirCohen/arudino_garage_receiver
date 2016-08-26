@@ -6,11 +6,11 @@
 #define DEMO_ARRAY_LEN 30
 #define N 195
 #define ZeroNum 1000
-#define RCV_PIN 10
+#define RCV_PIN 12
 #define DEBUG false
 #define Tran_Factor 6.83
 #define Tran_Num 50
-#define TRAN_PIN 9
+#define TRAN_PIN 11
 
 
 

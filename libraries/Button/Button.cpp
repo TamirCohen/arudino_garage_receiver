@@ -2,9 +2,9 @@
 #include "Arduino.h"
 #include "global.h"
 #define DelayTime 0
-#define PHASE_A_PIN 7//red
-#define PHASE_B_PIN 8//green
-#define PUSH_PIN 3//blue
+#define PHASE_A_PIN 8//red
+#define PHASE_B_PIN 9//green
+#define PUSH_PIN 2//blue
 Button::Button()
 {
 	loc=0;
