@@ -11,7 +11,6 @@ class ComVector
 	  ComVector(int n);
 	  ComVector(int n,String Name);
       void clean_arr(void);
-      boolean compare(ComVector &c2);
       void copy(ComVector &c2);
       int GetLength(void);
 	  void writeEE();
@@ -20,13 +19,16 @@ class ComVector
 	  void transmit(void);
 	  void setName(String Name);
 	  String GetName();
+		boolean compare(ComVector &c2);
+	protected:
+		uint8_t _vector[N];//stATIC
+		char read_bit(void);
+		uint8_t _length;
+	  
     private:
       boolean zeroes(bool state,int c_c);
       boolean Tcorrect(void);
-      char read_bit(void);
 	  String name;
-      uint8_t _vector[N];//stATIC
-      int _length;
       
 };
 #endif

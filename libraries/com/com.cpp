@@ -1,6 +1,7 @@
 #include "Arduino.h"
 #include "ComVector.h"
 #include "com.h"
+#include "ComQueue.h"
 #include "global.h"
 
 #define LED_PIN 13

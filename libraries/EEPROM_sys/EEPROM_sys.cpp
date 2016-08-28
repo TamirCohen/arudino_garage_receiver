@@ -22,7 +22,7 @@ int EEPROM_sys::read_len(uint8_t *vec, char idx)
 	{
 		EEPROM.get(offset,temp);
 		vec[i]=temp;
-		Serial.println(vec[i]);
+		//Serial.println(vec[i]);
 		offset = offset +sizeof(char);
 			
 	}
@@ -51,7 +51,7 @@ String EEPROM_sys::read_name(char idx)
 	  offset = offset +sizeof(char);
 	}
 	String ret(buffer1);
-	Serial.println(ret);
+	//Serial.println(ret);
 	return(ret);
 	
 }
@@ -152,18 +152,18 @@ void EEPROM_sys::Delete(char idx)
 {
 	if(last_idx>0)
 	{
-		Serial.print(F("idx"));
-		Serial.println((uint8_t)idx);
+		//Serial.print(F("idx"));
+		//Serial.println((uint8_t)idx);
 		uint8_t temp;
 		int offset = calc_offset(idx);
-		Serial.print(F("offset: "));
-		Serial.println(offset);
+		//Serial.print(F("offset: "));
+		//Serial.println(offset);
 		int last = calc_offset(idx+1);
-		Serial.print(F("last: "));
-		Serial.println(last);
+	//	Serial.print(F("last: "));
+	//	Serial.println(last);
 		int last_bit = calc_offset(last_idx);
 		int i;
-		Serial.println(last_idx);
+	//	Serial.println(last_idx);
 		for(i=offset;i<last;i++)
 		{
 			EEPROM.write(i,0);
@@ -173,7 +173,7 @@ void EEPROM_sys::Delete(char idx)
 		for(i=last;i<last_bit;i++)
 		{
 			EEPROM.get(i,temp);
-			Serial.println(temp);
+			//Serial.println(temp);
 			EEPROM.write(i+offset-last,temp);
 			EEPROM.write(i,0);
 		}

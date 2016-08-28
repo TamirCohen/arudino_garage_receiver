@@ -2,10 +2,11 @@
 #define com_h
 #include "Arduino.h" 
 #include "ComVector.h"
+#include "ComQueue.h"
 class com
   {
     private:
-      ComVector _ArrVec[2]; 
+      ComQueue _ArrVec[2]; 
 	  bool interupt;
     public:
       void MultiRead(uint8_t n);
