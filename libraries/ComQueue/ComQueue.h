@@ -8,6 +8,7 @@ class ComQueue: public ComVector
 		uint8_t first;
 		void insert(uint8_t n);
 		void remove(uint8_t n);
+		void empty();
 	public:
 		ComQueue():first(0)
 		{}

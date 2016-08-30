@@ -136,69 +136,74 @@ void ComVector::printVec(void)
 
 boolean ComVector::receive(void)
 {
-int j = 0;
-char c;
-bool state = 0;
-int c_nc = 0;//not correct
-int c_c = 0;
-bool mode_count = false;
-while (j<N && !UI_Manager.event())
-{
-  c=read_bit();//read high/low - 1/0
-  if(!(c==state))//if Read isnt state
-  {
-	c_nc++;
-	if(c_nc == 5)//if 5 in a row
+	int j = 0;
+	bool state = 0;
+	bool mode_count = false;
+	uint8_t sequence;
+	while (j<N && !UI_Manager.event())
 	{
-		if(c_c+c_nc>255*4)//we have just 8 bits
+		sequence = GetSequence(state);
+		if (mode_count) //if in transmition
 		{
-			_vector[j] = 255;
+			_vector[j] = sequence;
+			j++;//byte num in transmition
+			if(zeroes(state,sequence))//if stopped tansmition
+			{
+				break;
+			}
 		}
 		else
 		{
-			_vector[j] =(uint8_t)((c_c+c_nc)/4);
-			//Serial.println(c_c+c_nc);
+			mode_count = zeroes(state,sequence);//check new transmition?
+			if (mode_count) 
+			{
+				_vector[j] = sequence;
+				j++;//if in transmition count byte
+			}        
 		}
-	  if (mode_count) //if in transmition
+		state=!state;//change state
+	}
+	if(UI_Manager.event())
+	{
+		return false;
+	}
+	_length = j;
+	return(Tcorrect());
+}
+uint8_t ComVector::GetSequence(bool State)
+{
+	char c;
+	bool state = State;
+	int c_nc = 0;//not correct
+	int c_c = 0;
+	while(true)
+	{
+	  c=read_bit();//read high/low - 1/0
+	  if(!(c==state))//if Read isnt state
 	  {
-		j++;//byte num in transmition
-		if(zeroes(state,c_c))//if stopped tansmition
+		c_nc++;
+		if(c_nc == 5)//if 5 in a row
 		{
-			//Serial.println("stop-trans 0 num-");
-			//Serial.println(c_c);
-			
-		  break;
+			if(c_c+c_nc>255*4)//we have just 8 bits
+			{
+				return 255;
+			}
+			else
+			{
+				return (uint8_t)((c_c+c_nc)/4);
+				//Serial.println(c_c+c_nc);
+			}
 		}
+		
 	  }
 	  else
 	  {
-		mode_count = zeroes(state,c_c);//check new transmition?
-		if (mode_count) 
-		{
-			j++;//if in transmition count byte
-			//Serial.println("started transmition");
-		}        
+		c_c++;//add to correct
+		c_c+=c_nc;//add c_nc to c_c
+		c_nc=0;
 	  }
-	  state=!state;//change state
-	  c_c=0;
-	  c_nc=0;
+	  
 	}
-  }
-  else
-  {
-	c_c++;//add to correct
-	c_c+=c_nc;//add c_nc to c_c
-	c_nc=0;
-  }
-}
-if(UI_Manager.event())
-{
-	return false;
-}
-//printVec();
-_length = j;
-//Serial.println("left rec");
-return(Tcorrect());
 }
 
 String ComVector::GetName()

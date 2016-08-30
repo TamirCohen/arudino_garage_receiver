@@ -24,6 +24,7 @@ class ComVector
 		uint8_t _vector[N];//stATIC
 		char read_bit(void);
 		uint8_t _length;
+		uint8_t GetSequence(bool State);
 	  
     private:
       boolean zeroes(bool state,int c_c);

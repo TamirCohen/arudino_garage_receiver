@@ -104,6 +104,7 @@ void UIManager::ShortClick()
 			CShort(false);
 			Serial.println(F("killed flag"));
 			m.MultiRead(5);
+			m.GetVec()->printVec();
 			//finshed getting the transmition
 			Serial.println(F("finshed reading"));
 			if(LongPress||ShortPress)

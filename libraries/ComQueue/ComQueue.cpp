@@ -4,13 +4,13 @@
 void ComQueue::insert(uint8_t n)
 {
 	_vector[(_length+first)%N] = n;
-	if(length==N)
+	if(_length==N)
 	{
 		first++;
 	}
 	else
 	{
-		length++;
+		_length++;
 	}
 }
 void ComQueue::empty()
@@ -19,5 +19,5 @@ void ComQueue::empty()
 }
 boolean ComQueue::fill()
 {
-	
+	return true;
 }
