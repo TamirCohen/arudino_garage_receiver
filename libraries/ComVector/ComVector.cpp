@@ -92,16 +92,15 @@ return(true);
 boolean ComVector::compare(ComVector &c2)
 {
 int p;
-int equal=0;
 if (_length!=c2._length) return(false);
 for (p=0;p<_length;p++)
 {
-  if (abs(_vector[p]-c2._vector[p])<3) equal++;
+  if (!abs(_vector[p]-c2._vector[p])<3)
+  {
+	  return false;
+  }
 }
-if(equal < _length)
-{return false;}
-else
-{return true;}
+return true;
 
 }
 void ComVector::copy(ComVector &c2)

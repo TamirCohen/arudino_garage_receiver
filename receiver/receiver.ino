@@ -11,7 +11,7 @@
 #include <Menu.h>
 #include <arduino.h>
 #include <NamePage.h>//to deMl
-
+#include <ComQueue.h>
 #define RCV_PIN 12
 #define LED_PIN 13
 #define SCOPE_PIN 5
@@ -46,28 +46,13 @@ void setup()
 
 void loop()
 { 
- 
-//EE_manager.clear();
-//Serial.println(F("finshed"));
-//while(1);
-//EE_manager.read_all();
-//while(1);
-// com m;
-// m.MultiRead();
-// ComVector* a = m.GetVec();
-// a->setName("yosef");
-// a->printVec();
-// a->writeEE();
-// Serial.println("----break----");
-// ComVector b(195,"Tran0");
-//  b.readEE(2);
-//  b.printVec();
-//  Serial.println(b.GetName());
-
-//Serial.println(a->GetLength());
- Button_manager.CheckLoc();
- UI_Manager.CheckClick();
-  
+  Serial.print("Started looping");
+ ComQueue b;
+ b.fill();
+ b.printVec();
+ //Button_manager.CheckLoc();!!!!!!!!!!!SuperImportant!!!!!!!
+ //UI_Manager.CheckClick();!!!!!!!!!!!SuperImportant!!!!!!!
+  while(1);
   
  }
  

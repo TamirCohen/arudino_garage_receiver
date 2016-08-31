@@ -19,13 +19,31 @@ void com::MultiRead(uint8_t n)
 {
 	bool same;
 	char VerfStat=0;
-	Serial.println(UI_Manager.event());
+	ComVector * BaseVec = _ArrVec[1];
+	ComVector * CompareVec = _ArrVec[0];
+	ComVector * tmp;
+	//Serial.println(UI_Manager.event());
 	while(VerfStat!=1 && !UI_Manager.event())
 	{
-	  Serial.println("loop");
+	  //Serial.println("loop");
+	  CompareVec->fill();
+	  if(VerfStat!=0)
+	  {
+		same=BaseVec->compare(CompareVec);
+		if(!same)
+		{
+			*tmp = *CompareVec;
+			*CompareVec = *BaseVec;//switch between vectors
+			*BaseVec = *tmp;
+		}
+		else
+		{
+			
+		}
+	  }
 	  if(_ArrVec[VerfStat!=0].receive())
 	  { 
-		same=_ArrVec[0].compare(_ArrVec[1]);
+		
 		if (same|(!VerfStat)) 
 		{
 		  VerfStat = ((!VerfStat) ? n : (VerfStat-1));//if status=0->5 else status--
@@ -36,11 +54,7 @@ void com::MultiRead(uint8_t n)
 		  VerfStat=0;
 		}
 	  } 
-	  else//if the new arr is bad
-	  {
-		_ArrVec[VerfStat!=0].clean_arr();// clean it
-	  }
-	_ArrVec[1].clean_arr();//clean the compare arr
+
 	}
 	if(UI_Manager.event())
 	{

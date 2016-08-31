@@ -8,10 +8,12 @@ class ComQueue: public ComVector
 		uint8_t first;
 		void insert(uint8_t n);
 		void remove(uint8_t n);
+		void empty(void);
 	public:
 		ComQueue():first(0)
 		{}
 		boolean fill();
+		void printVec();
 		
 		//boolean compare(ComQueue &c2);
 	

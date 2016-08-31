@@ -15,7 +15,7 @@ class ComVector
       int GetLength(void);
 	  void writeEE();
 	  void readEE(char idx);
-	  void printVec(void);
+	  virtual void printVec(void);
 	  void transmit(void);
 	  void setName(String Name);
 	  String GetName();
