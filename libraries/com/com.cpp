@@ -5,9 +5,9 @@
 #include "global.h"
 
 #define LED_PIN 13
-ComVector* com::GetVec()
+ComQueue* com::GetVec()
 {
-	return &_ArrVec[0];
+	return Base;
 
 }
 void com::clean()
@@ -17,50 +17,53 @@ void com::clean()
 }
 void com::MultiRead(uint8_t n)
 {
+	Serial.println(F("in multyread"));
+	Serial.println(n);
 	bool same;
-	char VerfStat=0;
-	ComVector * BaseVec = _ArrVec[1];
-	ComVector * CompareVec = _ArrVec[0];
-	ComVector * tmp;
+	uint8_t VerfStat=0;
+	ComQueue * CompareVec = &(_ArrVec[0]);//zero loc
+	ComQueue * BaseVec = &(_ArrVec[1]);//first loc
+	ComQueue * tmp;
 	//Serial.println(UI_Manager.event());
-	while(VerfStat!=1 && !UI_Manager.event())
+	while(VerfStat!=1)//VerfStat!=1 && !UI_Manager.event()!!!important
 	{
-	  //Serial.println("loop");
 	  CompareVec->fill();
+	  //CompareVec->printVec();
 	  if(VerfStat!=0)
 	  {
 		same=BaseVec->compare(CompareVec);
 		if(!same)
 		{
-			*tmp = *CompareVec;
-			*CompareVec = *BaseVec;//switch between vectors
-			*BaseVec = *tmp;
+			tmp = CompareVec;
+			CompareVec = BaseVec;//switch between vectors
+			BaseVec = tmp;
+			CompareVec->empty();
+			VerfStat = n;
 		}
 		else
 		{
-			
+			CompareVec->empty();
+			VerfStat = VerfStat-1;
 		}
 	  }
-	  if(_ArrVec[VerfStat!=0].receive())
-	  { 
-		
-		if (same|(!VerfStat)) 
-		{
-		  VerfStat = ((!VerfStat) ? n : (VerfStat-1));//if status=0->5 else status--
-		}
-		else//if not stat 0 or not tottaly equals
-		{
-		  _ArrVec[0].copy(_ArrVec[1]);
-		  VerfStat=0;
-		}
+	  else
+	  {
+		tmp = CompareVec;
+		CompareVec = BaseVec;//switch between vectors
+		BaseVec = tmp;
+		CompareVec->empty();
+		VerfStat = n;
+
+		  
 	  } 
 
 	}
-	if(UI_Manager.event())
+	/*if(UI_Manager.event())
 	{
-		Serial.println("noticed flag inside");
+		Serial.println(F("noticed flag inside"));
 		clean();
-	}
+	}superrr important!!*/
+	Base = BaseVec;
 }
 void com::transmit(uint8_t loc)
 {

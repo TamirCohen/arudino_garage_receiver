@@ -1,7 +1,7 @@
 #ifndef ComVector_h
 #define ComVector_h
 
-#define N 195
+#define N 190
 #include "Arduino.h" 
 class ComVector
 {
@@ -19,7 +19,7 @@ class ComVector
 	  void transmit(void);
 	  void setName(String Name);
 	  String GetName();
-		boolean compare(ComVector &c2);
+	  virtual boolean compare(ComVector &c2);
 	protected:
 		uint8_t _vector[N];//stATIC
 		char read_bit(void);

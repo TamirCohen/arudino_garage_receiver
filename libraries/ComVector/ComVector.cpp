@@ -4,10 +4,10 @@
 #include <global.h>
 
 #define DEMO_ARRAY_LEN 30
-#define N 195
+#define N 190
 #define ZeroNum 1000
 #define RCV_PIN 12
-#define DEBUG false
+#define DEBUG true
 #define Tran_Factor 6.83
 #define Tran_Num 50
 #define TRAN_PIN 11
@@ -40,7 +40,7 @@ return _length;
 }
 char ComVector::read_bit(void)
 {
-static int demo[DEMO_ARRAY_LEN]={1500,70,30,70,30,70,30,70,30,70,1500,10,1500,70,30,70,30,70,30,70,30,70,1500,10,1500,40,50,40,1500,10};
+static int demo[DEMO_ARRAY_LEN]={70,30,70,30,70,30,70,30,70,500,100,500,70,30,70,30,70,30,70,30,70,500,100,100,40,50,40,100,10000};
 static char idx=0;
 static int idx_internal=demo[0];
 static bool state=false;

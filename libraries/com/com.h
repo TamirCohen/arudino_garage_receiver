@@ -8,9 +8,10 @@ class com
     private:
       ComQueue _ArrVec[2]; 
 	  bool interupt;
+	  ComQueue* Base = &_ArrVec[0];
     public:
       void MultiRead(uint8_t n);
-      ComVector* GetVec(void);
+      ComQueue* GetVec(void);
 	  void clean(void);
 	  void transmit(uint8_t loc);
 	  void Cinterupt(void);

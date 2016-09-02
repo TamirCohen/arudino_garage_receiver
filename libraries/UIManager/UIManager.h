@@ -20,6 +20,7 @@ class UIManager
 		void CShort(boolean s);
 		boolean CheckClick();
 		boolean event();
+		com m;//to private!!!!
 	private:
 		String SetMenu_arr[5]={"New","Spy Mode","Delete","Transmit","Reset"};
 		Menu TransMenu;
@@ -27,7 +28,6 @@ class UIManager
 		Spage TransPage;
 		Spage RecvPage;
 		NamePage NPage;
-		com m;
 		boolean IsMenu();
 		boolean LongPress;
 		boolean ShortPress;

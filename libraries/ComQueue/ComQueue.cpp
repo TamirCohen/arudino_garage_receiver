@@ -1,13 +1,13 @@
 #include "ComQueue.h"
 #include "arduino.h"
 #include "global.h"
-#define N 195
+#define N 190
 void ComQueue::insert(uint8_t n)
 {
 	_vector[(_length+first)%N] = n;
 	if(_length==N)
 	{
-		first++;
+		first = (first+1)%N;
 	}
 	else
 	{
@@ -20,20 +20,38 @@ void ComQueue::empty()
 }
 void ComQueue::printVec()
 {
+	Serial.println("printing vec");
+	Serial.print("first: ");
+	Serial.println(first);
+	Serial.print("last idx: ");
+	Serial.println(first+_length);
 	int j;
 	for(j=first;j<first+_length;j++)
 	{
 		Serial.println(_vector[j%N]*4);
 	}
 }
+boolean ComQueue::compare(ComQueue *c2)
+{
+	int p;
+	if (_length!=c2->_length) return(false);
+	for (p=0;p<_length;p++)
+	{
+		if (!(abs(_vector[(p+first)%N]-c2->_vector[(p+c2->first)%N])<3))
+		{
+			return false;
+		}
+	}
+	return true;
+
+}
 boolean ComQueue::fill()
 {
 	char c;
-	bool state = 0;
+	bool state = 1;
 	int c_nc = 0;//not correct
 	int c_c = 0;
-	bool mode_count = false;
-	while (!UI_Manager.event())
+	while (true)//!UI_Manager.event()!!!!!important
 	{
 	  c=read_bit();//read high/low - 1/0
 	  if(!(c==state))//if Read isnt state
@@ -52,7 +70,6 @@ boolean ComQueue::fill()
 			else if((c_c+c_nc)/4<3)
 			{
 				empty();
-				Serial.println("drop");
 				//Serial.println(c_c+c_nc);
 			}
 			else
@@ -73,4 +90,13 @@ boolean ComQueue::fill()
 	}
 	return false;
 
+}
+boolean ComQueue::filltest()
+{
+	uint8_t i;
+	for(i=0;i<20;i++)
+	{
+		insert(i);
+	}
+	return true;
 }
