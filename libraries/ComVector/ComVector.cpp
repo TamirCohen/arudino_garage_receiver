@@ -3,11 +3,11 @@
 #include "EEPROM_sys.h"
 #include <global.h>
 
-#define DEMO_ARRAY_LEN 30
+#define DEMO_ARRAY_LEN 29
 #define N 190
 #define ZeroNum 1000
 #define RCV_PIN 12
-#define DEBUG true
+#define DEBUG false
 #define Tran_Factor 6.83
 #define Tran_Num 50
 #define TRAN_PIN 11
@@ -40,24 +40,25 @@ return _length;
 }
 char ComVector::read_bit(void)
 {
-static int demo[DEMO_ARRAY_LEN]={70,30,70,30,70,30,70,30,70,500,100,500,70,30,70,30,70,30,70,30,70,500,100,100,40,50,40,100,10000};
+static int demo[DEMO_ARRAY_LEN]={70,30,70,30,70,30,70,30,70,500,100,500,70,30,70,30,70,30,70,30,70,500,100,100,40,50,40,70,1500};
 static char idx=0;
 static int idx_internal=demo[0];
 static bool state=false;
+state=idx%2;
 
 if (!DEBUG) 
   return(digitalRead(RCV_PIN));
 else 
 {
-  if (idx_internal==0)
-  {
-	idx++;
-	idx=idx % DEMO_ARRAY_LEN;
-	idx_internal=demo[idx];
-	state=!state;
-  }
-  else
 	idx_internal--;
+	
+	if (idx_internal==0)
+	{
+		Serial.print("idx: ");
+		Serial.println((uint8_t)idx);
+		idx=(idx+1) % DEMO_ARRAY_LEN;
+		idx_internal=demo[idx];
+	}
   return(state);
 }
 }
@@ -206,7 +207,7 @@ String ComVector::GetName()
 }
 void ComVector::writeEE()
 {
-	EE_manager.writeL(_vector,_length,name);
+	EE_manager.writeL(_vector,_length,name,0);
 }
 
 void ComVector::readEE(char idx)

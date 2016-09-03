@@ -37,8 +37,12 @@ boolean ComQueue::compare(ComQueue *c2)
 	if (_length!=c2->_length) return(false);
 	for (p=0;p<_length;p++)
 	{
-		if (!(abs(_vector[(p+first)%N]-c2->_vector[(p+c2->first)%N])<3))
+		//Serial.print(abs(_vector[(p+first)%N]));
+		//Serial.print("-");
+		//Serial.println(c2->_vector[(p+c2->first)%N]);
+		if (!(abs(_vector[(p+first)%N]-c2->_vector[(p+c2->first)%N])<4))
 		{
+
 			return false;
 		}
 	}
@@ -51,6 +55,7 @@ boolean ComQueue::fill()
 	bool state = 1;
 	int c_nc = 0;//not correct
 	int c_c = 0;
+	bool started = false;
 	while (true)//!UI_Manager.event()!!!!!important
 	{
 	  c=read_bit();//read high/low - 1/0
@@ -59,26 +64,42 @@ boolean ComQueue::fill()
 		c_nc++;
 		if(c_nc == 5)//if 5 in a row
 		{
-			if(c_c+c_nc>255*4)//we have just 8 bits
+			if(started||state)
 			{
-				insert(255);
-				if(!state)
+				if(c_c+c_nc>255*4)//we have just 8 bits
 				{
-					return true;
+					insert(255);
+					if(!state)
+					{
+						return true;
+					}
+					if(!started)
+					{
+						started=true;
+					}
 				}
-			}
-			else if((c_c+c_nc)/4<3)
-			{
-				empty();
-				//Serial.println(c_c+c_nc);
+				else if((c_c+c_nc)/4<3)
+				{
+					//Serial.println("emptied");
+					empty();
+					started=false;
+					//Serial.println(c_c+c_nc);
+				}
+				else
+				{
+					insert((uint8_t)((c_c+c_nc)/4));
+					if(!started)
+					{started=true;}
+				}
+				c_c=0;
 			}
 			else
 			{
-				insert((uint8_t)((c_c+c_nc)/4));
+				c_c=5;
 			}
-			state=!state;//change state
-			c_c=0;
 			c_nc=0;
+			state=!state;
+
 		}
 	  }
 	  else
@@ -99,4 +120,8 @@ boolean ComQueue::filltest()
 		insert(i);
 	}
 	return true;
+}
+void ComQueue::writeEE()
+{
+	EE_manager.writeL(_vector,_length,name,first);
 }

@@ -13,7 +13,7 @@ class ComVector
       void clean_arr(void);
       void copy(ComVector &c2);
       int GetLength(void);
-	  void writeEE();
+	  virtual void writeEE();
 	  void readEE(char idx);
 	  virtual void printVec(void);
 	  void transmit(void);
@@ -24,11 +24,11 @@ class ComVector
 		uint8_t _vector[N];//stATIC
 		char read_bit(void);
 		uint8_t _length;
+		String name;
 	  
     private:
       boolean zeroes(bool state,int c_c);
       boolean Tcorrect(void);
-	  String name;
       
 };
 #endif

@@ -1,7 +1,7 @@
 #include "Arduino.h"
 #include "EEPROM_sys.h"
 #define MAX_DATA_LENGTH 203
-#define max_vec_len 195
+#define max_vec_len 190
 #define buf_len 15
 EEPROM_sys::EEPROM_sys(void)
 {
@@ -67,7 +67,7 @@ void EEPROM_sys::writeName(String name,int offset0)
 	  offset = offset +sizeof(char);
 	}
 }
-bool EEPROM_sys::write(uint8_t *vec, char idx,int len,String name)//vi 
+bool EEPROM_sys::write(uint8_t *vec, char idx,int len,String name,int first)//vi 
 {
 	int offset,i;
 	uint8_t* p=vec;
@@ -84,15 +84,15 @@ bool EEPROM_sys::write(uint8_t *vec, char idx,int len,String name)//vi
 		Serial.println("writeEE");
 		for(i=0;i<len;i++)
 		{
-			EEPROM.put(offset,p[i]);
+			EEPROM.put(offset,p[(i+first)%max_vec_len]);
 			offset = offset +sizeof(char);
 		}
 		return(true);		
 	}
 }
-bool EEPROM_sys::writeL(uint8_t *vec ,int len,String name)
+bool EEPROM_sys::writeL(uint8_t *vec ,int len,String name,int first)
 {
-	if(write(vec,last_idx,len,name))
+	if(write(vec,last_idx,len,name,first))
 	{
 		EEPROM.write(0,(uint8_t)last_idx+1);
 		last_idx++;

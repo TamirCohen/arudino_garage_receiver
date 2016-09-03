@@ -12,7 +12,7 @@ class EEPROM_sys
 		int read_len(uint8_t *vec, char idx) ;
 		void clear();
 		String read_name(char idx);
-		bool writeL(uint8_t *vec ,int len,String name);
+		bool writeL(uint8_t *vec ,int len,String name,int first);
 		char LastIdx(void);
 		String* GetNames(void);
 		void read_all(void);
@@ -23,7 +23,7 @@ class EEPROM_sys
 		int IsFit(int len,char idx);
 		int calc_offset(char idx);
 		void writeName(String name,int offset0);
-		bool write(uint8_t *vec, char idx,int len,String name);
+		bool write(uint8_t *vec, char idx,int len,String name,int first);
 		char last_idx;
 		
 };

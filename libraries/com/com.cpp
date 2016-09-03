@@ -28,12 +28,14 @@ void com::MultiRead(uint8_t n)
 	while(VerfStat!=1)//VerfStat!=1 && !UI_Manager.event()!!!important
 	{
 	  CompareVec->fill();
+	 // Serial.println(CompareVec->GetLength());
 	  //CompareVec->printVec();
 	  if(VerfStat!=0)
 	  {
 		same=BaseVec->compare(CompareVec);
 		if(!same)
 		{
+			//Serial.println("Vec not same");
 			tmp = CompareVec;
 			CompareVec = BaseVec;//switch between vectors
 			BaseVec = tmp;
@@ -42,6 +44,7 @@ void com::MultiRead(uint8_t n)
 		}
 		else
 		{
+			//Serial.println("Vec same");
 			CompareVec->empty();
 			VerfStat = VerfStat-1;
 		}

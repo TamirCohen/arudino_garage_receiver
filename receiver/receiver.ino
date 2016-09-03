@@ -47,14 +47,14 @@ void loop()
 { 
   Serial.println(F("Started looping"));
 
-m.MultiRead(4);
+m.MultiRead(2);
 Serial.println(F("finished multy"));
 ComQueue* a =m.GetVec();
 a->printVec();
 //ComQueue a;
 //a.fill();
 //a.printVec();
-Serial.println(F("finshed"));
+Serial.println(F("finshedM"));
  //Button_manager.CheckLoc();!!!!!!!!!!!SuperImportant!!!!!!!
  //UI_Manager.CheckClick();!!!!!!!!!!!SuperImportant!!!!!!!
   while(1);

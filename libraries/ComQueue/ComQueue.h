@@ -16,6 +16,7 @@ class ComQueue: public ComVector
 		void printVec();
 		boolean compare(ComQueue *c2);
 		void empty(void);
+		void writeEE();
 		//boolean compare(ComQueue &c2);
 	
 		
