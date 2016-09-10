@@ -11,7 +11,7 @@
 #define Tran_Factor 6.83
 #define Tran_Num 50
 #define TRAN_PIN 11
-
+#define min_length 20
 
 
 ComVector::ComVector(void)
@@ -75,17 +75,9 @@ else
 }
 boolean ComVector::Tcorrect(void)
 {
-int p;
-for(p=0;p<N;p++)
+if(_length<min_length)
 {
-  if(_vector[p] == 0)
-  {
-	return(true);
-  }
-  if(_vector[p]<3)
-  {
-	return(false);
-  }
+	return false;
 }
 return(true);
 }
@@ -96,12 +88,13 @@ int equal=0;
 if (_length!=c2._length) return(false);
 for (p=0;p<_length;p++)
 {
-  if (abs(_vector[p]-c2._vector[p])<3) equal++;
+  if (abs(_vector[p]-c2._vector[p])>=3)
+  {
+	  return false;
+  }
 }
-if(equal < _length)
-{return false;}
-else
-{return true;}
+
+return true;
 
 }
 void ComVector::copy(ComVector &c2)
@@ -117,11 +110,11 @@ for(p=0;p<N;p++)
 
 void ComVector::clean_arr(void)
 {
-int p;
-for(p=0;p<N;p++)
+//int p;
+/*for(p=0;p<N;p++)
 {
 _vector[p]=0;
-}
+}*/
 _length=0;
 }
 
@@ -156,6 +149,10 @@ while (j<N && !UI_Manager.event())
 		}
 		else
 		{
+			if((c_c+c_nc)/4<4)
+			{
+				return false;
+			}
 			_vector[j] =(uint8_t)((c_c+c_nc)/4);
 			//Serial.println(c_c+c_nc);
 		}
@@ -197,7 +194,6 @@ if(UI_Manager.event())
 }
 //printVec();
 _length = j;
-//Serial.println("left rec");
 return(Tcorrect());
 }
 

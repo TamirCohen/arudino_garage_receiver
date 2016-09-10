@@ -21,7 +21,6 @@ void com::MultiRead(uint8_t n)
 	Serial.println(UI_Manager.event());
 	while(VerfStat!=1 && !UI_Manager.event())
 	{
-	  Serial.println("loop");
 	  if(_ArrVec[VerfStat!=0].receive())
 	  { 
 		same=_ArrVec[0].compare(_ArrVec[1]);

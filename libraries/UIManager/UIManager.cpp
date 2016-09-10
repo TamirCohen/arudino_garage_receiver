@@ -131,7 +131,7 @@ void UIManager::ShortClick()
 			RecvPage.show();
 			CShort(false);
 			Serial.println(F("killed flag"));
-			m.MultiRead(2);
+			m.MultiRead(1);
 			//finshed getting the transmition
 			Serial.println(F("finshed reading"));
 			if(LongPress||ShortPress)
