@@ -35,15 +35,25 @@ char col_count=0;
 bool pin_state=true;
 int i=0;
 int j=0;
-char code[N]={1,1,1,1,1,1,1,1,0,1,1,0,1,1,1,0,1,0,1,1,0,1,0,0,0,1,1,0,0,1,1,1,1,1,1,1,0,0,0,1,0,0,1,1,1,1,0,1,1,0,0,0};
+char code[N]={
+ 1,1,1,1,
+ 1,1,1,1,
+ 0,1,1,0,
+ 1,1,1,0,
+ 1,0,1,1,
+ 0,1,0,0,
+ 0,1,1,0,
+ 0,1,1,1,
+ 1,1,1,1,
+ 0,0,0,1,
+ 0,0,1,1,
+ 1,1,0,1,
+ 1,0,0,0};
 
 //void (*StFuns[2]){s0,s1};
 void setup() {
-  // initialize serial communications at 9600 bps:
-  Serial.begin(9600);
-  pinMode(3,INPUT);
+ 
   pinMode(5,OUTPUT);
-  pinMode(4,OUTPUT);
   pinMode(13,OUTPUT);
 }
 
@@ -52,29 +62,31 @@ void loop() {
 
   j=0;
 
-  digitalWrite(13,HIGH); //LED
   
-  digitalWrite(4,LOW);
+  
+  digitalWrite(5,LOW);
   delayMicroseconds(startbit_low);
   
-  digitalWrite(4,HIGH);
+  digitalWrite(5,HIGH);
   delayMicroseconds(startbit_high);
   
   while (j<N) {  
     if (code[j]) {
-      digitalWrite(4,LOW);
+      digitalWrite(5,LOW);
       delayMicroseconds(one_logic_low);
-      digitalWrite(4,HIGH);
+      digitalWrite(5,HIGH);
       delayMicroseconds(one_logic_high);
       
     } else {
-      digitalWrite(4,LOW);
+      digitalWrite(5,LOW);
       delayMicroseconds(zero_logic_low);
-      digitalWrite(4,HIGH);
+      digitalWrite(5,HIGH);
       delayMicroseconds(zero_logic_high);      
     }
+    j++;
   }
-  
+  digitalWrite(13,HIGH); //LED
+  delay(500);
   digitalWrite(13,LOW);  //LED
-  delay(100); 
+  delay(500); 
 }
